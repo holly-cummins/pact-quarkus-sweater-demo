@@ -4,18 +4,18 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
 public class WoolResourceTest {
 
     @Test
-    public void testHelloEndpoint() {
+    public void testWoolEndpoint() {
         given()
-          .when().get("/wool")
-          .then()
-             .statusCode(200)
-             .body(is("Hello here is my sheep"));
+                .when().get("/wool/order/white")
+                .then()
+                .statusCode(200)
+                .body("colour", equalTo("white"));
     }
 
 }
