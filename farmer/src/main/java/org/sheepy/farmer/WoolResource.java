@@ -1,4 +1,4 @@
-package me.holly.pact.sweater;
+package org.sheepy.farmer;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

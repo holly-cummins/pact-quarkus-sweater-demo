@@ -1,4 +1,4 @@
-package me.holly.pact.sweater;
+package org.sheepy.farmer;
 
 public class Skein {
     private String colour;
