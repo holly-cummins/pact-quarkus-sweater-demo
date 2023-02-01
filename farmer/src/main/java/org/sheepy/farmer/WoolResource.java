@@ -1,16 +1,16 @@
 package org.sheepy.farmer;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 
 @Path("/wool")
 public class WoolResource {
 
-    @Path("/order/{colour}")
-    @GET
-    public Skein order(@PathParam("colour") Order order) {
+    @Path("/order")
+    @POST
+    public Skein order(Order order) {
         Skein skein = new Skein();
+        // For now, we have no ability to handle colour requests
         skein.setColour("white");
         return skein;
     }

@@ -1,6 +1,7 @@
 package org.sheepy.farmer;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -10,27 +11,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusTest
 public class WoolResourceTest {
 
+    // We should make these parameterised tests
     @Test
     public void testWoolEndpointForWhiteWool() {
+        String colour = "white";
+        Order order = new Order(colour);
         Skein skein = given()
-                .when().get("/wool/order/white")
+                .contentType(ContentType.JSON)
+                .body(order)
+                .when()
+                .post("/wool/order")
                 .then()
                 .statusCode(200)
                 .extract().as(Skein.class);
 
-        assertEquals(skein.getColour(), "white");
+        assertEquals(skein.getColour(), colour);
     }
 
     @Test
     @Disabled
     public void testWoolEndpointForBlackWool() {
+        String colour = "black";
+        Order order = new Order(colour);
         Skein skein = given()
-                .when().get("/wool/order/black")
+                .contentType(ContentType.JSON)
+                .body(order)
+                .when()
+                .post("/wool/order")
                 .then()
                 .statusCode(200)
                 .extract().as(Skein.class);
 
-        assertEquals(skein.getColour(), "black");
+        assertEquals(skein.getColour(), colour);
     }
 
 }

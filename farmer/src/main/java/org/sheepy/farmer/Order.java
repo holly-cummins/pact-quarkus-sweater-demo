@@ -3,6 +3,9 @@ package org.sheepy.farmer;
 public class Order {
     private String colour;
 
+    public Order() {
+    }
+
     public Order(String colour) {
         this.colour = colour;
     }
