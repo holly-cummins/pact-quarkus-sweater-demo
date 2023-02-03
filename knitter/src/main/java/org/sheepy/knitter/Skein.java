@@ -4,6 +4,9 @@ public class Skein {
     private String colour;
     private String weight;
 
+    public Skein() {
+    }
+
     public Skein(String colour) {
         this.colour = colour;
     }

@@ -22,7 +22,7 @@ public class SweaterResourceTest {
                 .statusCode(200)
                 .extract().as(Sweater.class);
 
-        assertEquals(sweater.getColour(), "white");
+        assertEquals("white", sweater.getColour());
     }
 
 
