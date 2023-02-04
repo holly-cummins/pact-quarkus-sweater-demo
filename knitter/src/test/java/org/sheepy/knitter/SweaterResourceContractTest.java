@@ -19,7 +19,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(PactConsumerTestExt.class)
-@PactTestFor(providerName = "farmer", port = "8084")
+@PactTestFor(providerName = "farmer", port = "8086")
 @PactDirectory("target/pacts")
 @QuarkusTest
 public class SweaterResourceContractTest {
