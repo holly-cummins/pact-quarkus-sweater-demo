@@ -31,9 +31,10 @@ public class SweaterResourceContractTest {
 
         // Here we define our mock, which is also our expectations for the provider
         String sweaterBody = "{\"colour\":\"white\"}\n";
-        return builder.given("test post")
+        return builder
                 .uponReceiving("post request")
                 .path("/wool/order")
+                .headers(headers)
                 .method(HttpMethod.POST)
                 .willRespondWith()
                 .status(200)
