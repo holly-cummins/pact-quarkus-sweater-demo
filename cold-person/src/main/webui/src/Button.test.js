@@ -24,7 +24,7 @@ describe("the order sweater button", () => {
         expect(el).toBeTruthy();
     });
 
-    test("includes an colour field", async () => {
+    test("includes a colour field", async () => {
         render(<Button/>);
         const input = await screen.findByRole("textbox");
         expect(input).toBeInTheDocument();
