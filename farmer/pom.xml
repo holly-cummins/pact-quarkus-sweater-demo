@@ -50,6 +50,12 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.pact</groupId>
+      <artifactId>quarkus-pact-provider</artifactId>
+      <version>0.2</version>
+      <scope>provided</scope> <!-- This should be test scope, but see https://github.com/quarkiverse/quarkus-pact/issues/28 -->
+    </dependency>
   </dependencies>
   <build>
     <plugins>

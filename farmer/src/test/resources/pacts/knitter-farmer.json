@@ -1,0 +1,48 @@
+{
+  "consumer": {
+    "name": "knitter"
+  },
+  "interactions": [
+    {
+      "description": "post request",
+      "key": "f5b7e897",
+      "pending": false,
+      "request": {
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/wool/order"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "colour": "white"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.3.17"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "farmer"
+  }
+}
