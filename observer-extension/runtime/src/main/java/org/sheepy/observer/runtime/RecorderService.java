@@ -18,11 +18,11 @@ public class RecorderService {
         this.config = config;
         this.client = ClientBuilder.newClient();
     }
-    
+
     public void log(String message) {
         try {
-//            client.target(config.baseURL).path("log")
-//                    .request(MediaType.TEXT_PLAIN).post(Entity.text(message));
+            client.target(config.baseURL).path("log")
+                    .request(MediaType.TEXT_PLAIN).post(Entity.text(message));
             // Don't log anything back about the response or it ends up with too much circular logging
         } catch (Throwable e) {
             System.out.println(LOG_PREFIX + "Connection error: " + e);
@@ -41,11 +41,11 @@ public class RecorderService {
         }
     }
 
-    public void recordEvent(String name) {
+    public void recordInteraction(String name) {
         Component component = new Component(name);
 
         try {
-            client.target(config.baseURL).path("event")
+            client.target(config.baseURL).path("interaction")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(component));
 

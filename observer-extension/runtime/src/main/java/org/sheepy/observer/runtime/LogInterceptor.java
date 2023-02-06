@@ -19,7 +19,7 @@ public class LogInterceptor {
     Object around(InvocationContext context) throws Exception {
 
         Method method = context.getMethod();
-        recorder.recordEvent(method.getName());
+        recorder.recordInteraction(method.getName());
 
         return context.proceed();
     }
