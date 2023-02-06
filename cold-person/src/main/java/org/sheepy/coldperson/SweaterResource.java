@@ -10,7 +10,7 @@ import javax.ws.rs.Path;
  * This is a BFF for the cold person frontend.
  * Here, BFF could be "backend for frontend" or "best friend forever."
  */
-@Path("/sweater")
+@Path("/bff")
 public class SweaterResource {
     @Inject
     @RestClient

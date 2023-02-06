@@ -9,7 +9,7 @@ const Button = () => {
     const handleSubmit = async () => {
         try {
             const res = await axios.post(
-                "http://localhost:8080/sweater/order",
+                "http://localhost:8080/bff/order",
                 {
                     colour: colour,
                 },

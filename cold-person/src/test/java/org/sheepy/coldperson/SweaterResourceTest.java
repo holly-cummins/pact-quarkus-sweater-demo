@@ -17,7 +17,7 @@ public class SweaterResourceTest {
                 .contentType(ContentType.JSON)
                 .body(order)
                 .when()
-                .post("/sweater/order")
+                .post("/bff/order")
                 .then()
                 .statusCode(200)
                 .extract().as(Sweater.class);
