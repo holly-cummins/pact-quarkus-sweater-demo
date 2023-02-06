@@ -4,7 +4,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Create self-diagramming architectures.
@@ -13,7 +16,8 @@ import java.util.List;
 public class RecorderResource {
 
     // Very lazy state handling - just put everything in memory
-    private static List<Component> components = new ArrayList<>();
+    // We should eventually switch to using panache
+    private static Map<String, Component> components = new HashMap<>();
     private static List<Interaction> interactions = new ArrayList<>();
     private static List<Log> logs = new ArrayList<>();
 
@@ -21,14 +25,15 @@ public class RecorderResource {
     @POST
     public void addComponent(Component component) {
         System.out.println("\uD83C\uDFA5 [recorder] registering component " + component.getName());
+        // Components should be unique
 
-        components.add(component);
+        components.put(component.getName(), component);
     }
 
     @Path("/components")
     @GET
-    public List<Component> getComponent() {
-        return components;
+    public Collection<Component> getComponents() {
+        return components.values();
     }
 
     @Path("/interaction")

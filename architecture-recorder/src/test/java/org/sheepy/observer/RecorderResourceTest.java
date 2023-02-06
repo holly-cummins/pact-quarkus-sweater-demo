@@ -36,6 +36,39 @@ public class RecorderResourceTest {
     }
 
     @Test
+    public void testDuplicateComponentsAreStrippedOut() {
+        Component component = new Component("important-part");
+
+        // Record the same component twice
+        given()
+                .contentType(ContentType.JSON)
+                .body(component)
+                .when()
+                .post("/recorder/component")
+                .then()
+                .statusCode(204);
+        given()
+                .contentType(ContentType.JSON)
+                .body(component)
+                .when()
+                .post("/recorder/component")
+                .then()
+                .statusCode(204);
+        Component[] components = given()
+                .contentType(ContentType.JSON)
+                .body(component)
+                .when()
+                .get("/recorder/components")
+                .then()
+                .statusCode(200)
+                .extract().as(Component[].class);
+
+        assertEquals(1, components.length);
+        assertEquals(component.getName(), components[0].getName());
+    }
+
+
+    @Test
     public void testAddingAInteractionIncludesItInInteractions() {
         Interaction interaction = new Interaction("{\"thing\": \"value\"}");
 
