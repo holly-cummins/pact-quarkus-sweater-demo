@@ -10,8 +10,11 @@ import axios from "axios";
 axios.defaults.adapter = require("axios/lib/adapters/http");
 jest.mock("axios");
 
+let orderNumber = 0
+const incrementedOrderNumber = () => orderNumber++;
+
 describe("the order sweater button", () => {
-    const expectedResult = {colour: "white", size: 10};
+    const expectedResult = {colour: "white", size: 10, orderNumber: incrementedOrderNumber()};
     const user = userEvent.setup();
 
     beforeEach(() => {
@@ -50,5 +53,5 @@ describe("the order sweater button", () => {
             expect.anything()
         );
     });
-    
+
 });

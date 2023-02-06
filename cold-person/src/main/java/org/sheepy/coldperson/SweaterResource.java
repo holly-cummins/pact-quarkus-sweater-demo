@@ -16,10 +16,14 @@ public class SweaterResource {
     @RestClient
     KnitterService knitter;
 
+    @Inject
+    OrderNumber orderNumber;
+
     @Path("/order")
     @POST
     public Sweater order(SweaterOrder order) {
         Sweater sweater = knitter.getSweater(order);
+        sweater.setOrderNumber(orderNumber.get());
         return sweater;
     }
 }

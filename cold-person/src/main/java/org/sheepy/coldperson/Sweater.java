@@ -3,6 +3,7 @@ package org.sheepy.coldperson;
 public class Sweater {
     private String colour;
     private int size;
+    private int orderNumber;
 
     /**
      * Constructor for deserialization
@@ -24,5 +25,13 @@ public class Sweater {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }
