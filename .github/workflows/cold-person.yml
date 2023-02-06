@@ -39,7 +39,7 @@ jobs:
         cache: maven
     # Rather than fussing around with upload and download jobs, just build the extension we depend on, since it's so small
     - name: Build Extension with Maven
-      run: mvn -B package --file ../observer-extension/pom.xml
+      run: mvn -B install --file ../observer-extension/pom.xml
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
