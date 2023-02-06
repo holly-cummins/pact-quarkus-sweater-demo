@@ -13,11 +13,13 @@ on:
     branches: [ "main" ]
     paths:
       - 'farmer/**'
+      - 'observer-extension/**'
       - '.github/workflows/farmer.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'farmer/**'
+      - 'observer-extension/**'
       - '.github/workflows/farmer.yml'
 
 jobs:
@@ -35,6 +37,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+      # Rather than fussing around with upload and download jobs, just build the extension we depend on, since it's so small
+    - name: Build Extension with Maven
+      run: mvn -B install --file ../observer-extension/pom.xml
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
