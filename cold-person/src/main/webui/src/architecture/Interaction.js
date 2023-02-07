@@ -8,7 +8,8 @@ const InteractionDisplay = styled.div`
   margin: 1rem;
   transition: all .5s ease;
   color: #41403E;
-  font-size: 2rem;
+  font-size: 1.25rem;
+  text-align: center;
   letter-spacing: 1px;
   outline: none;
   box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);

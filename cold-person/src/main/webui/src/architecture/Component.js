@@ -1,13 +1,18 @@
 import styled from "styled-components"
 import Interaction from "./Interaction";
 
+const ComponentName = styled.div`
+  font-weight: bold;
+  text-align: center;
+`
+
 const ComponentDisplay = styled.div`
   background: transparent;
   padding: 1rem 1rem;
   margin: 1rem;
   transition: all .5s ease;
   color: #41403E;
-  font-size: 2rem;
+  font-size: 1.5rem;
   letter-spacing: 1px;
   outline: none;
   box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
@@ -39,7 +44,7 @@ const Component = ({component, interactions}) => {
     return (
 
         <ComponentDisplay>
-            {component.name}
+            <ComponentName>{component.name}</ComponentName>
             {interactions?.filter(interaction => interaction.owningComponent === component.name).map((interaction) => {
                 return (
                     <Interaction key={interaction.id} interaction={interaction}/>

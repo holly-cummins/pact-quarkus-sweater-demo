@@ -1,6 +1,11 @@
 import {useState} from "react";
 import axios from "axios";
 import Sweater from "./Sweater";
+import styled from "styled-components"
+
+const SweaterOrderer = styled.div`
+  padding: 1rem;
+`
 
 const Button = () => {
     const [sweaters, setSweaters] = useState([]);
@@ -32,7 +37,7 @@ const Button = () => {
 
     return (
         <>
-            <div className="add-sweater-container">
+            <SweaterOrderer>
                 <input
                     type="text"
                     className="form-control"
@@ -41,7 +46,7 @@ const Button = () => {
                 <button type="submit" onClick={handleSubmit}>
                     Order
                 </button>
-            </div>
+            </SweaterOrderer>
             <div className="sweaters-container">
                 {sweaters.map((sweater) => {
                     return (

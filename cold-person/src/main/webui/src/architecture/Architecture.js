@@ -71,7 +71,7 @@ const Architecture = () => {
             // Do our own duplicate checking, to avoid infinite loops
             // The endpoint also sends us data on a regular cadence and we do not want to re-render then
             if (!interactions.find(interaction => interaction.id === newInteraction.id)) {
-                const newInteractions = [...interactions, newInteraction]
+                const newInteractions = [...interactions, newInteraction].reverse()
                 setInteractions(newInteractions)
             }
         }

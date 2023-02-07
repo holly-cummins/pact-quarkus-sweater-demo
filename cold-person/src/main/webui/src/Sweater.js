@@ -1,10 +1,14 @@
+import styled from "styled-components"
+
+const OrderNumber = styled.span`
+  font-size: 10px;
+  color: grey;
+`
+
 const Sweater = ({sweater}) => {
     return (
-
         <div className="sweater-card">
-            <p>Your new sweater is</p>
-            <h2 className="sweater-colour">{sweater.orderNumber}</h2>
-            <h2 className="sweater-colour">{sweater.colour}</h2>
+            <p><OrderNumber>#{sweater.orderNumber}</OrderNumber>Your new sweater is a nice {sweater.colour} sweater.</p>
         </div>
     );
 };
