@@ -30,16 +30,19 @@ public class SweaterResourceContractTest {
         headers.put("Content-Type", "application/json");
 
         // Here we define our mock, which is also our expectations for the provider
-        String sweaterBody = "{\"colour\":\"white\"}\n";
+        String woolOrderBody = "{\"colour\":\"white\"}\n";
+        String woolBody = "{\"colour\":\"white\"}\n";
+
         return builder
                 .uponReceiving("post request")
                 .path("/wool/order")
                 .headers(headers)
+                .body(woolOrderBody)
                 .method(HttpMethod.POST)
                 .willRespondWith()
                 .status(200)
                 .headers(headers)
-                .body(sweaterBody)
+                .body(woolBody)
                 .toPact(V4Pact.class);
     }
 

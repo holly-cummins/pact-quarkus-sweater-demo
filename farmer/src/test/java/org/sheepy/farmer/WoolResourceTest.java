@@ -2,7 +2,6 @@ package org.sheepy.farmer;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -29,7 +28,6 @@ public class WoolResourceTest {
     }
 
     @Test
-    @Disabled
     public void testWoolEndpointForBlackWool() {
         String colour = "black";
         Order order = new Order(colour);

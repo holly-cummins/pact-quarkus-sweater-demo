@@ -8,6 +8,13 @@
       "key": "f5b7e897",
       "pending": false,
       "request": {
+        "body": {
+          "content": {
+            "colour": "white"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
         "headers": {
           "Content-Type": [
             "application/json"
