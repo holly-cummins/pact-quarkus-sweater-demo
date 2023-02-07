@@ -2,7 +2,6 @@ import styled from "styled-components"
 import Interaction from "./Interaction";
 
 const ComponentDisplay = styled.div`
-  align-self: center;
   background: transparent;
   padding: 1rem 1rem;
   margin: 1rem;

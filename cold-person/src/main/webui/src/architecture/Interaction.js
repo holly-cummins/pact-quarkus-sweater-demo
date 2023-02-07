@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import {useState} from "react";
 
 const InteractionDisplay = styled.div`
   align-self: center;
@@ -34,11 +35,33 @@ const InteractionDisplay = styled.div`
 
 `
 
+const Payload = styled.div`
+  position: absolute;
+  opacity: 0.8;
+  background-color: white;
+
+`
+
 const Interaction = ({interaction}) => {
+
+    const [isOpen, setOpen] = useState(false)
+
+    const handleOpen = () => {
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
     return (
 
-        <InteractionDisplay>
+        <InteractionDisplay onMouseOver={handleOpen}
+                            onMouseOut={handleClose}>
             {interaction.methodName}
+            {isOpen && (<Payload>
+                {interaction.payload}
+            </Payload>)}
         </InteractionDisplay>
     );
 };

@@ -5,6 +5,8 @@ import axios from "axios";
 
 const ArchitectureDisplay = styled.div`
   display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
   background-color: white;
 `
 
