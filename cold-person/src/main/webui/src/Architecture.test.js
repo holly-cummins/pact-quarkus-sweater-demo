@@ -10,7 +10,7 @@ axios.defaults.adapter = require("axios/lib/adapters/http");
 jest.mock("axios");
 
 describe("the architecture view", () => {
-    const data = [{"name": "widget"}, {"name": "splodger"}, {"name": "fizzwhuzz"}];
+    const data = [{"name": "widget", id: "1"}, {"name": "splodger", id: "2"}, {"name": "fizzwhuzz", id: "3"}];
 
     beforeEach(() => {
         axios.get.mockResolvedValue({data});

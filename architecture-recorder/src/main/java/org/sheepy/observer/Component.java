@@ -1,6 +1,8 @@
 package org.sheepy.observer;
 
-public class Component {
+import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
+
+public class Component extends ReactivePanacheMongoEntity {
     private String name;
 
     public Component() {

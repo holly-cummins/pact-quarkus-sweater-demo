@@ -2,6 +2,7 @@ package org.sheepy.observer;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -9,6 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class RecorderResourceTest {
+
+    @BeforeEach
+    public void setUp() {
+        given()
+                .when()
+                .post("/recorder/clearall")
+                .then()
+                .statusCode(200);
+    }
 
     @Test
     public void testAddingAComponentIncludesItInComponents() {
@@ -21,7 +31,7 @@ public class RecorderResourceTest {
                 .when()
                 .post("/recorder/component")
                 .then()
-                .statusCode(204);
+                .statusCode(200);
         Component[] components = given()
                 .contentType(ContentType.JSON)
                 .body(component)
@@ -46,14 +56,14 @@ public class RecorderResourceTest {
                 .when()
                 .post("/recorder/component")
                 .then()
-                .statusCode(204);
+                .statusCode(200);
         given()
                 .contentType(ContentType.JSON)
                 .body(component)
                 .when()
                 .post("/recorder/component")
                 .then()
-                .statusCode(204);
+                .statusCode(200);
         Component[] components = given()
                 .contentType(ContentType.JSON)
                 .body(component)
