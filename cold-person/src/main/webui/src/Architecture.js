@@ -6,10 +6,8 @@ import axios from "axios";
 const Architecture = () => {
     const [components, setComponents] = useState([]);
 
-    console.log("HOLLY rendering arch")
     useEffect(() => {
         const fetchArchitectureRecords = async () => {
-            console.log("HOLLY will fetch")
             try {
                 const res = await axios.get(
                     "http://localhost:8088/recorder/components",
@@ -21,7 +19,6 @@ const Architecture = () => {
                     }
                 );
 
-                console.log("HOLLY answer is", res?.data)
                 setComponents(res?.data);
             } catch (err) {
                 console.error(err.message);
