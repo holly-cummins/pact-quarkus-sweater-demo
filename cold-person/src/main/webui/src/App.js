@@ -14,6 +14,7 @@ const Shop = styled.div`
   flex-direction: column;
   background-color: #282c34;
   color: white;
+  padding: 1rem;
 
 `
 
@@ -21,10 +22,17 @@ const Title = styled.h1`
   padding: 0.5rem;
 `
 
+const Icon = styled.img`
+  max-height: 9rem;
+  object-fit: contain;
+  padding-top: 1rem;
+`
+
 function App() {
     return (
         <Layout>
             <Shop>
+                <Icon src="sweater-white.png" alt="a stick figure in a jumper"/>
                 <Title>
                     Welcome to the sweater shop.
                 </Title>
