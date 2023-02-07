@@ -5,6 +5,7 @@ import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
 public class Interaction extends ReactivePanacheMongoEntity {
     String methodName;
     String owningComponent;
+    String payload;
 
     public String getMethodName() {
         return methodName;
@@ -20,5 +21,13 @@ public class Interaction extends ReactivePanacheMongoEntity {
 
     public void setOwningComponent(String owningComponent) {
         this.owningComponent = owningComponent;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 }

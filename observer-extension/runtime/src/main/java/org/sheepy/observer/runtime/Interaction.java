@@ -3,6 +3,7 @@ package org.sheepy.observer.runtime;
 public class Interaction {
     String methodName;
     String owningComponent;
+    String payload;
 
     public String getMethodName() {
         return methodName;
@@ -18,5 +19,13 @@ public class Interaction {
 
     public void setOwningComponent(String owningComponent) {
         this.owningComponent = owningComponent;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 }
