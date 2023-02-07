@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import Interaction from "./Interaction";
 
 const ComponentDisplay = styled.div`
   align-self: center;
@@ -35,11 +36,16 @@ const ComponentDisplay = styled.div`
 
 `
 
-const Component = ({component}) => {
+const Component = ({component, interactions}) => {
     return (
 
         <ComponentDisplay>
             {component.name}
+            {interactions?.map((interaction) => {
+                return (
+                    <Interaction key={interaction.id} interaction={interaction}/>
+                );
+            })}
         </ComponentDisplay>
     );
 };

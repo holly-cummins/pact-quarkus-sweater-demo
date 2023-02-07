@@ -11,6 +11,7 @@ const ArchitectureDisplay = styled.div`
 
 const Architecture = () => {
     const [components, setComponents] = useState([]);
+    const [interactions, setInteractions] = useState([]);
 
     useEffect(() => {
 
@@ -39,7 +40,6 @@ const Architecture = () => {
         const eventSource = new EventSource("http://localhost:8088/recorder/componentstream");
         eventSource.onmessage = e => {
             const newComponent = JSON.parse(e.data)
-            newComponent.name = newComponent.name
 
             // The endpoint will send us all the data it knows about every time we open a connection,
             // and we open a connection every time we re-render.
@@ -58,14 +58,38 @@ const Architecture = () => {
     }, [components.length])
 // See https://stackoverflow.com/questions/59467758/passing-array-to-useeffect-dependency-list; we want to register the dependency on components, but avoid infinite loops
 
+    useEffect(() => {
+
+        const eventSource = new EventSource("http://localhost:8088/recorder/interactionstream");
+        eventSource.onmessage = e => {
+            const newInteraction = JSON.parse(e.data)
+            
+            // The endpoint will send us all the data it knows about every time we open a connection,
+            // and we open a connection every time we re-render.
+            // Do our own duplicate checking, to avoid infinite loops
+            // The endpoint also sends us data on a regular cadence and we do not want to re-render then
+            if (!interactions.find(interaction => interaction.id === newInteraction.id)) {
+                const newInteractions = [...interactions, newInteraction]
+                setInteractions(newInteractions)
+            }
+        }
+
+        return () => {
+            eventSource.close();
+        };
+
+    }, [interactions.length])
+
     return (
 
         <ArchitectureDisplay>
+
             {components?.map((component) => {
                 return (
-                    <Component key={component.id} component={component}/>
+                    <Component key={component.id} component={component} interactions={interactions}/>
                 );
             })}
+
         </ArchitectureDisplay>
     )
 };

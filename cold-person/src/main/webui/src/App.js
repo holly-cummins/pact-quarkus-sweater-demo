@@ -1,6 +1,6 @@
 import "./App.css";
 import Button from "./Button";
-import Architecture from "./Architecture";
+import Architecture from "./architecture/Architecture";
 
 function App() {
     return (

@@ -18,7 +18,6 @@ import java.util.List;
 @Path("/recorder")
 public class RecorderResource {
 
-    private static List<Interaction> interactions = new ArrayList<>();
     private static List<Log> logs = new ArrayList<>();
 
     @Path("/component")
@@ -39,7 +38,7 @@ public class RecorderResource {
     @Path("/componentstream")
     @RestStreamElementType(MediaType.APPLICATION_JSON)
     @GET
-    public Multi<Component> getComponentStream() {
+    public Multi<Component> streamComponents() {
         return Component.streamAll();
     }
 
@@ -54,16 +53,22 @@ public class RecorderResource {
 
     @Path("/interaction")
     @POST
-    public void addInteraction(Interaction message) {
-        System.out.println("\uD83C\uDFA5 [recorder] registering interaction " + message.getName());
-
-        interactions.add(message);
+    public void addInteraction(Interaction interaction) {
+        interaction.persistOrUpdate().subscribe().with(i -> System.out.println("\uD83C\uDFA5 [recorder] registering interaction " + ((Interaction) i).getName()));
     }
+
+    @Path("/interactionstream")
+    @RestStreamElementType(MediaType.APPLICATION_JSON)
+    @GET
+    public Multi<Component> streamInteractions() {
+        return Interaction.streamAll();
+    }
+
 
     @Path("/interactions")
     @GET
-    public List<Interaction> getInteractions() {
-        return interactions;
+    public Uni<List<Interaction>> getInteractions() {
+        return Interaction.listAll();
     }
 
     @Path("/log")
@@ -83,6 +88,7 @@ public class RecorderResource {
     @Path("/clearall")
     @POST
     public Uni<Long> clearAll() {
+        Interaction.deleteAll();
         return Component.deleteAll();
         // TODO add other entities once we make them
     }

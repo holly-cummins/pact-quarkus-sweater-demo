@@ -1,6 +1,8 @@
 package org.sheepy.observer;
 
-public class Interaction {
+import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
+
+public class Interaction extends ReactivePanacheMongoEntity {
     private String name;
 
     public Interaction() {
