@@ -80,7 +80,10 @@ public class RecorderResourceTest {
 
     @Test
     public void testAddingAInteractionIncludesItInInteractions() {
-        Interaction interaction = new Interaction("{\"thing\": \"value\"}");
+        String payload = "{\"thing\": \"value\"}";
+        Interaction interaction = new Interaction();
+        interaction.setMethodName("doTheThing");
+        interaction.setOwningComponent("widgets");
 
         // First record a interaction
         given()
@@ -100,7 +103,7 @@ public class RecorderResourceTest {
                 .extract().as(Interaction[].class);
 
         assertEquals(1, interactions.length);
-        assertEquals(interaction.getName(), interactions[0].getName());
+        assertEquals(interaction.getMethodName(), interactions[0].getMethodName());
     }
 
 

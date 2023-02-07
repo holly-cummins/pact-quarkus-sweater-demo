@@ -18,7 +18,7 @@ import java.util.List;
 @Path("/recorder")
 public class RecorderResource {
 
-    private static List<Log> logs = new ArrayList<>();
+    private static final List<Log> logs = new ArrayList<>();
 
     @Path("/component")
     @POST
@@ -88,8 +88,7 @@ public class RecorderResource {
     @Path("/clearall")
     @POST
     public Uni<Long> clearAll() {
-        Interaction.deleteAll();
-        return Component.deleteAll();
+        return Component.deleteAll().chain(() -> Interaction.deleteAll());
         // TODO add other entities once we make them
     }
 }
