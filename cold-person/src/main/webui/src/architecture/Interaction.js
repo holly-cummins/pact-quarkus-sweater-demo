@@ -10,7 +10,7 @@ const InteractionDisplay = styled.div`
   font-size: 2rem;
   letter-spacing: 1px;
   outline: none;
-  box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .2);
+  box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
 
   border-top-left-radius: 255px 25px;
   border-top-right-radius: 15px 225px;
@@ -26,7 +26,7 @@ const InteractionDisplay = styled.div`
   */
 
   &:hover {
-    box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
+    box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .2);
   }
 
   border: solid 4px #41403E;
