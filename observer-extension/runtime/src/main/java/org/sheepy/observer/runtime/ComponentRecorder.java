@@ -1,6 +1,7 @@
 package org.sheepy.observer.runtime;
 
 import io.quarkus.runtime.annotations.Recorder;
+import org.sheepy.observer.runtime.config.QuarkusProfile;
 
 @Recorder
 public class ComponentRecorder {
@@ -9,8 +10,8 @@ public class ComponentRecorder {
     QuarkusConfig appConfig;
     RecorderService recorder;
 
-    public ComponentRecorder(ObserverConfig config, QuarkusConfig appConfig) {
-        this.recorder = new RecorderService(config);
+    public ComponentRecorder(ObserverConfig config, QuarkusConfig appConfig, QuarkusProfile profile) {
+        this.recorder = new RecorderService(config, profile);
         this.appConfig = appConfig;
     }
 
