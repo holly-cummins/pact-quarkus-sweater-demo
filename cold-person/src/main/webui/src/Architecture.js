@@ -1,6 +1,12 @@
 import {useEffect, useState} from "react";
 import Component from "./Component";
 import axios from "axios";
+import styled from "styled-components"
+
+const ArchitectureDisplay = styled.div`
+  display: flex;
+  background-color: white;
+`
 
 
 const Architecture = () => {
@@ -31,13 +37,13 @@ const Architecture = () => {
 
     return (
         <>
-            <div className="components-container">
+            <ArchitectureDisplay>
                 {components?.map((component) => {
                     return (
                         <Component key={component.name} component={component}/>
                     );
                 })}
-            </div>
+            </ArchitectureDisplay>
         </>
     );
 };
