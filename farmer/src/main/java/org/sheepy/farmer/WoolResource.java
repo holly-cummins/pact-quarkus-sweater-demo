@@ -8,7 +8,7 @@ public class WoolResource {
 
     @Path("/order")
     @POST
-    public Skein order(Order order) {
+    public Skein shearSheep(Order order) {
         Sheep sheep;
         try {
             sheep = Sheep.valueOf(order.getColour().toLowerCase());

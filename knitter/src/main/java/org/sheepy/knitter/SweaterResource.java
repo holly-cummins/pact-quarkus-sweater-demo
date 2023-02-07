@@ -14,7 +14,7 @@ public class SweaterResource {
 
     @Path("/order")
     @POST
-    public Sweater order(SweaterOrder order) {
+    public Sweater knitSweater(SweaterOrder order) {
         Skein skein = farmer.getWool(new WoolOrder(order.getColour()));
         Sweater sweater = new Sweater(skein, order.getSize());
         return sweater;
