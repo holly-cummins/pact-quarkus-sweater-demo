@@ -1,0 +1,11 @@
+#! /bin/sh
+
+rm -rf ./farmer/src/test/resources/pacts
+rm -rf ./knitter/src/test/java/org/sheepy/knitter/SweaterResourceContractTest.java
+rm -rf ./farmer/src/test/java/org/sheepy/farmer/WoolResourceContractTest.java
+
+rm -rf */target
+
+# This will only work if the server is up, but is useful
+curl -i -X POST http://localhost:8088/recorder/clearall
+

@@ -89,6 +89,11 @@ public class RecorderResource {
     @POST
     public Uni<Long> clearAll() {
         return Component.deleteAll().chain(() -> Interaction.deleteAll());
-        // TODO add other entities once we make them
+    }
+
+    @Path("/clearinteractions")
+    @POST
+    public Uni<Long> clearInteractions() {
+        return Interaction.deleteAll();
     }
 }
