@@ -4,7 +4,7 @@ const InteractionDisplay = styled.div`
   align-self: center;
   background: transparent;
   padding: 1rem 1rem;
-  margin: 0 1rem;
+  margin: 1rem;
   transition: all .5s ease;
   color: #41403E;
   font-size: 2rem;
@@ -17,7 +17,6 @@ const InteractionDisplay = styled.div`
   border-bottom-right-radius: 225px 15px;
   border-bottom-left-radius: 15px 255px;
 
-  margin: 20px;
   /*
   Above is shorthand for:
   border-top-left-radius: 255px 15px;
@@ -39,7 +38,7 @@ const Interaction = ({interaction}) => {
     return (
 
         <InteractionDisplay>
-            {interaction.name}
+            {interaction.methodName}
         </InteractionDisplay>
     );
 };

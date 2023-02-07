@@ -5,7 +5,7 @@ const ComponentDisplay = styled.div`
   align-self: center;
   background: transparent;
   padding: 1rem 1rem;
-  margin: 0 1rem;
+  margin: 1rem;
   transition: all .5s ease;
   color: #41403E;
   font-size: 2rem;
@@ -18,7 +18,6 @@ const ComponentDisplay = styled.div`
   border-bottom-right-radius: 225px 15px;
   border-bottom-left-radius: 15px 255px;
 
-  margin: 20px;
   /*
   Above is shorthand for:
   border-top-left-radius: 255px 15px;
@@ -41,7 +40,7 @@ const Component = ({component, interactions}) => {
 
         <ComponentDisplay>
             {component.name}
-            {interactions?.map((interaction) => {
+            {interactions?.filter(interaction => interaction.owningComponent === component.name).map((interaction) => {
                 return (
                     <Interaction key={interaction.id} interaction={interaction}/>
                 );

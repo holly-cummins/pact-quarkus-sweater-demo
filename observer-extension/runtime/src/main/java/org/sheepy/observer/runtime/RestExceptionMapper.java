@@ -14,7 +14,7 @@ public class RestExceptionMapper
 
     @Override
     public Response toResponse(Exception e) {
-        recorder.recordInteraction(e.getMessage());
+        recorder.log(e.getMessage());
 
         // We lose some detail about the exceptions here, especially for 404, but we will live with that
         return Response.serverError().build();

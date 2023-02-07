@@ -11,7 +11,7 @@ import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.LogHandlerBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
 import org.jboss.jandex.DotName;
-import org.sheepy.observer.runtime.HelloRecorder;
+import org.sheepy.observer.runtime.ComponentRecorder;
 import org.sheepy.observer.runtime.LogHandlerMaker;
 import org.sheepy.observer.runtime.LogInterceptor;
 import org.sheepy.observer.runtime.ObserverLog;
@@ -35,7 +35,7 @@ class ObserverProcessor {
 
     @Record(RUNTIME_INIT)
     @BuildStep
-    public void helloBuildStep(HelloRecorder recorder) {
+    public void helloBuildStep(ComponentRecorder recorder) {
         recorder.registerComponent();
     }
 

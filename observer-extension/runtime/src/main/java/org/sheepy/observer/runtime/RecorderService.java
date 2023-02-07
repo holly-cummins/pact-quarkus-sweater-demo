@@ -41,13 +41,12 @@ public class RecorderService {
         }
     }
 
-    public void recordInteraction(String name) {
-        Component component = new Component(name);
+    public void recordInteraction(Interaction interaction) {
 
         try {
             client.target(config.baseURL).path("interaction")
                     .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.json(component));
+                    .post(Entity.json(interaction));
 
         } catch (Throwable e) {
             System.out.println(LOG_PREFIX + "Connection error: " + e);
