@@ -10,13 +10,16 @@ const SweaterOrderer = styled.div`
 const Button = () => {
     const [sweaters, setSweaters] = useState([]);
     const [colour, setColour] = useState("");
+    const [orderNumber, setOrderNumber] = useState(0);
 
     const handleSubmit = async () => {
+        const newOrderNumber = orderNumber + 1
+        setOrderNumber(newOrderNumber)
         try {
             const res = await axios.post(
                 "http://localhost:8080/bff/order",
                 {
-                    colour: colour,
+                    colour: colour, orderNumber
                 },
                 {
                     headers: {

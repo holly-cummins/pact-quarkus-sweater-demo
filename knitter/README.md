@@ -3,7 +3,7 @@
 ## Trying it out
 
 ```shell
-curl -i -X POST -H 'Content-Type: application/json' -d '{"colour": "white", "size": "10"}' http://localhost:8082/sweater/order
+curl -i -X POST -H 'Content-Type: application/json' -d '{"colour": "white", "orderNumber": "10"}' http://localhost:8082/sweater/order
 ```
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.

@@ -2,7 +2,7 @@ package org.sheepy.knitter;
 
 public class Sweater {
     private String colour;
-    private int size;
+    private int orderNumber;
 
     /**
      * Constructor for deserialization
@@ -10,9 +10,9 @@ public class Sweater {
     public Sweater() {
     }
 
-    public Sweater(Skein wool, int size) {
+    public Sweater(Skein wool, int orderNumber) {
         this.colour = wool.getColour();
-        this.size = size;
+        this.orderNumber = orderNumber;
     }
 
     public String getColour() {
@@ -23,11 +23,11 @@ public class Sweater {
         this.colour = colour;
     }
 
-    public int getSize() {
-        return size;
+    public int getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }

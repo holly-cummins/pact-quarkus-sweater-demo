@@ -14,7 +14,7 @@ public class WoolResourceTest {
     @Test
     public void testWoolEndpointForWhiteWool() {
         String colour = "white";
-        Order order = new Order(colour);
+        Order order = new Order(colour, 2);
         Skein skein = given()
                 .contentType(ContentType.JSON)
                 .body(order)
@@ -30,7 +30,7 @@ public class WoolResourceTest {
     @Test
     public void testWoolEndpointForBlackWool() {
         String colour = "black";
-        Order order = new Order(colour);
+        Order order = new Order(colour, 4);
         Skein skein = given()
                 .contentType(ContentType.JSON)
                 .body(order)

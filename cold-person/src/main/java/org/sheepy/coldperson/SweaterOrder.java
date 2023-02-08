@@ -2,11 +2,11 @@ package org.sheepy.coldperson;
 
 public class SweaterOrder {
     private String colour;
-    private int size;
+    private int orderNumber;
 
-    public SweaterOrder(String colour, int size) {
+    public SweaterOrder(String colour, int orderNumber) {
         this.colour = colour;
-        this.size = size;
+        this.orderNumber = orderNumber;
     }
 
     public String getColour() {
@@ -17,11 +17,11 @@ public class SweaterOrder {
         this.colour = colour;
     }
 
-    public int getSize() {
-        return size;
+    public int getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }
