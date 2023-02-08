@@ -14,6 +14,7 @@ public class MockKnitterService implements KnitterService {
     public Sweater getSweater(SweaterOrder order) {
         Sweater sweater = new Sweater();
         sweater.setColour(order.getColour());
+        sweater.setOrderNumber(order.getOrderNumber());
         return sweater;
     }
 }
