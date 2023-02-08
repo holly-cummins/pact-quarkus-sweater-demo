@@ -1,7 +1,7 @@
 import React from "react";
 import {render, screen} from "@testing-library/react";
 
-import Architecture from "./Architecture";
+import Components from "./Components";
 
 import axios from "axios";
 
@@ -9,9 +9,7 @@ import axios from "axios";
 axios.defaults.adapter = require("axios/lib/adapters/http");
 jest.mock("axios");
 
-describe("the architecture view", () => {
-
-    // This is testing a bit too much of the components and interactions components, but we can live with it for the moment
+describe("the components view", () => {
     const data = [{"name": "widget", id: "1"}, {"name": "splodger", id: "2"}, {"name": "fizzwhuzz", id: "3"}];
 
     beforeEach(() => {
@@ -19,7 +17,7 @@ describe("the architecture view", () => {
     });
 
     test("includes all the component names", async () => {
-        render(<Architecture/>);
+        render(<Components/>);
         let el = await screen.findByText(/fizzwhuzz/i);
         expect(el).toBeInTheDocument();
 
@@ -29,6 +27,5 @@ describe("the architecture view", () => {
         el = await screen.findByText(/widget/i);
         expect(el).toBeInTheDocument();
     });
-
 
 });

@@ -54,6 +54,7 @@ public class RecorderResource {
     @Path("/interaction")
     @POST
     public void addInteraction(Interaction interaction) {
+        interaction.setTimestamp(System.currentTimeMillis());
         interaction.persistOrUpdate().subscribe().with(i -> System.out.println("\uD83C\uDFA5 [recorder] registering interaction " + ((Interaction) i).getOwningComponent() + ":" + ((Interaction) i).getMethodName()));
     }
 

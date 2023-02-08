@@ -2,6 +2,16 @@ import styled from "styled-components"
 import {useState} from "react";
 
 const InteractionDisplay = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const Event = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const Component = styled.div`
   align-self: center;
   background: transparent;
   padding: 1rem 1rem;
@@ -35,7 +45,6 @@ const InteractionDisplay = styled.div`
   border-style: solid;
   border-color: ${props => props.isException ? "#993300" : "#41403E"};
 
-
 `
 
 const Payload = styled.div`
@@ -63,7 +72,11 @@ const Interaction = ({interaction}) => {
 
         <InteractionDisplay onMouseOver={handleOpen}
                             onMouseOut={handleClose} isException={isException}>
-            {interaction.methodName}
+            <Event>
+                {interaction.methodName}
+            </Event>
+            <Component>{interaction.owningComponent}</Component>
+
             {isOpen && (<Payload>
                 {JSON.stringify(interaction.payload)}
             </Payload>)}

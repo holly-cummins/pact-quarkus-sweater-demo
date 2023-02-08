@@ -8,8 +8,10 @@ import userEvent from "@testing-library/user-event"
 describe("the interaction", () => {
     const payload = {fred: "mabel"};
     const payloadString = /mabel/;
-    const name = "widget"
-    const interaction = {methodName: name, payload};
+    const methodName = "doThing"
+    const componentName = "widget"
+
+    const interaction = {methodName: methodName, owningComponent: componentName, payload};
     let user;
 
     beforeEach(() => {
@@ -17,12 +19,17 @@ describe("the interaction", () => {
 
     })
 
-    test("displays a name", async () => {
+    test("displays a method name", async () => {
         render(<Interaction interaction={interaction}/>);
-        const element = await screen.findByText(name);
+        const element = await screen.findByText(methodName);
         expect(element).toBeInTheDocument();
     });
 
+    test("displays a component name", async () => {
+        render(<Interaction interaction={interaction}/>);
+        const element = await screen.findByText(componentName);
+        expect(element).toBeInTheDocument();
+    });
 
     it("hides the payload before any hover", async () => {
         render(<Interaction interaction={interaction}/>);
@@ -31,7 +38,7 @@ describe("the interaction", () => {
 
     it("hovering on the name brings up a payload", async () => {
         render(<Interaction interaction={interaction}/>);
-        await user.hover(screen.getByText(name))
+        await user.hover(screen.getByText(methodName))
         expect(screen.getByText(payloadString)).toBeInTheDocument();
     })
 
@@ -41,7 +48,7 @@ describe("the interaction", () => {
             <div>{dummyElement}</div>
             <Interaction interaction={interaction}/></div>);
 
-        await user.hover(screen.getByText(name))
+        await user.hover(screen.getByText(methodName))
         expect(screen.getByText(payloadString)).toBeInTheDocument();
 
         await user.hover(screen.getByText(dummyElement))
