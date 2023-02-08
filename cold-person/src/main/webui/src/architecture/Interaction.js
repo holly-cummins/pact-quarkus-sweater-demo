@@ -57,9 +57,7 @@ const Interaction = ({interaction}) => {
         setOpen(false)
     }
 
-    // The exception looks like json, but we haven't parsed it, so it's just a string
-    const isException = interaction.payload?.includes("exception");
-    console.log(isException, "got", interaction.payload, interaction.payload?.exception)
+    const isException = interaction.payload.exception != null;
 
     return (
 
@@ -67,7 +65,7 @@ const Interaction = ({interaction}) => {
                             onMouseOut={handleClose} isException={isException}>
             {interaction.methodName}
             {isOpen && (<Payload>
-                {interaction.payload}
+                {JSON.stringify(interaction.payload)}
             </Payload>)}
         </InteractionDisplay>
     );

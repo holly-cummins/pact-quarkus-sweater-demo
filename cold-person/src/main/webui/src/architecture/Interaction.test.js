@@ -6,7 +6,8 @@ import userEvent from "@testing-library/user-event"
 
 
 describe("the interaction", () => {
-    const payload = "{fred: mabel}";
+    const payload = {fred: "mabel"};
+    const payloadString = /mabel/;
     const name = "widget"
     const interaction = {methodName: name, payload};
     let user;
@@ -31,7 +32,7 @@ describe("the interaction", () => {
     it("hovering on the name brings up a payload", async () => {
         render(<Interaction interaction={interaction}/>);
         await user.hover(screen.getByText(name))
-        expect(screen.getByText(payload)).toBeInTheDocument();
+        expect(screen.getByText(payloadString)).toBeInTheDocument();
     })
 
     it("leaving the item after hovering hides the payload", async () => {
@@ -41,10 +42,10 @@ describe("the interaction", () => {
             <Interaction interaction={interaction}/></div>);
 
         await user.hover(screen.getByText(name))
-        expect(screen.getByText(payload)).toBeInTheDocument();
+        expect(screen.getByText(payloadString)).toBeInTheDocument();
 
         await user.hover(screen.getByText(dummyElement))
-        expect(screen.queryByText(payload)).toBeNull()
+        expect(screen.queryByText(payloadString)).toBeNull()
 
     })
 })
