@@ -12,8 +12,8 @@ import io.quarkus.deployment.builditem.LogHandlerBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
 import org.jboss.jandex.DotName;
 import org.sheepy.observer.runtime.ComponentRecorder;
+import org.sheepy.observer.runtime.InteractionInterceptor;
 import org.sheepy.observer.runtime.LogHandlerMaker;
-import org.sheepy.observer.runtime.LogInterceptor;
 import org.sheepy.observer.runtime.ObserverLog;
 import org.sheepy.observer.runtime.RecorderService;
 import org.sheepy.observer.runtime.RestExceptionMapper;
@@ -50,7 +50,7 @@ class ObserverProcessor {
      */
     @BuildStep
     void beans(BuildProducer<AdditionalBeanBuildItem> producer) {
-        producer.produce(AdditionalBeanBuildItem.unremovableOf(LogInterceptor.class));
+        producer.produce(AdditionalBeanBuildItem.unremovableOf(InteractionInterceptor.class));
         producer.produce(AdditionalBeanBuildItem.unremovableOf(RecorderService.class));
     }
 

@@ -12,9 +12,15 @@ public class RestExceptionMapper
     @Context
     private RecorderService recorder;
 
+    @Context
+    private QuarkusConfig appConfig;
+
     @Override
     public Response toResponse(Exception e) {
-        recorder.log(e.getMessage());
+        Interaction interaction = new Interaction();
+        interaction.setPayload("{\"exception\": \"" + e.getMessage() + "\"}");
+        interaction.setOwningComponent(appConfig.name());
+        recorder.recordInteraction(interaction);
 
         // We lose some detail about the exceptions here, especially for 404, but we will live with that
         return Response.serverError().build();

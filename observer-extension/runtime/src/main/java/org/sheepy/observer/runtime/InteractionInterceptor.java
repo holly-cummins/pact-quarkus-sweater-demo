@@ -10,12 +10,12 @@ import java.lang.reflect.Method;
 
 @ObserverLog
 @Interceptor
-public class LogInterceptor {
+public class InteractionInterceptor {
     private final RecorderService recorder;
     private final ObjectMapper mapper;
     private final QuarkusConfig appConfig;
 
-    public LogInterceptor(RecorderService recorder, QuarkusConfig appConfig, ObjectMapper mapper) {
+    public InteractionInterceptor(RecorderService recorder, QuarkusConfig appConfig, ObjectMapper mapper) {
         this.recorder = recorder;
         this.appConfig = appConfig;
         this.mapper = mapper;
