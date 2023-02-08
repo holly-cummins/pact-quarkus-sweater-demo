@@ -40,12 +40,16 @@ const ComponentDisplay = styled.div`
 
 `
 
+
 const Component = ({component, interactions}) => {
+    // We've lost a bit of generic-ness here; ideally we would sort by timestamp instead
+    const sortedInteractions = interactions?.filter(interaction => interaction.owningComponent === component.name).sort((a, b) => b.payload?.orderNumber - a.payload?.orderNumber)
+
     return (
 
         <ComponentDisplay>
             <ComponentName>{component.name}</ComponentName>
-            {interactions?.filter(interaction => interaction.owningComponent === component.name).map((interaction) => {
+            {sortedInteractions?.map((interaction) => {
                 return (
                     <Interaction key={interaction.id} interaction={interaction}/>
                 );
