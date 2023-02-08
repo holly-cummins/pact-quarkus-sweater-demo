@@ -1,5 +1,7 @@
 package org.sheepy.knitter;
 
+import au.com.dius.pact.consumer.dsl.DslPart;
+import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
@@ -30,15 +32,20 @@ public class SweaterResourceContractTest {
         headers.put("Content-Type", "application/json");
 
         // Here we define our mock, which is also our expectations for the provider
-        String woolOrderBody = "{\"colour\":\"white\"}\n";
+
+        // This defines what the body of the request could look like; we are generic and say it can be anything that meets the schema
+        DslPart woolOrderBody = new PactDslJsonBody()
+                .stringType("colour")
+                .numberType("orderNumber");
+
         String woolBody = "{\"colour\":\"white\"}\n";
 
         return builder
                 .uponReceiving("post request")
                 .path("/wool/order")
                 .headers(headers)
-                .body(woolOrderBody)
                 .method(HttpMethod.POST)
+                .body(woolOrderBody)
                 .willRespondWith()
                 .status(200)
                 .headers(headers)
