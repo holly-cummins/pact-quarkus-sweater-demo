@@ -1,4 +1,6 @@
 target/
+*.iml
+**/.idea/vcs.xml
 **/.idea/workspace.xml
 pom.xml.tag
 pom.xml.releaseBackup
