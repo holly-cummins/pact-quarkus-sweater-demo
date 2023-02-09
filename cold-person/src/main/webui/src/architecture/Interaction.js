@@ -128,11 +128,11 @@ const Interaction = ({request, response}) => {
 
         <InteractionDisplay>
             <Event isException={isException}>
-                <MethodName onMouseOver={handleRequestOpen}
-                            onMouseOut={handleRequestClose}> {request?.methodName}</MethodName>
+                <MethodName> {request?.methodName}</MethodName>
                 <Anchor>
                     <Rough shadow={true} onMouseOver={handleRequestOpen}
-                           onMouseOut={handleRequestClose} center={true} id={requestSvg} viewBox="0 -15 100 30">
+                           onMouseOut={handleRequestClose} data-testid="request-line" center={true} id={requestSvg}
+                           viewBox="0 -15 100 30">
                     </Rough>
                 </Anchor>
                 <Anchor>

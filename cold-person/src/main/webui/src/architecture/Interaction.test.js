@@ -40,7 +40,7 @@ describe("the interaction", () => {
 
         it("hovering on the name brings up a payload", async () => {
             render(<Interaction request={interaction}/>);
-            await user.hover(screen.getByText(methodName))
+            await user.hover(screen.getByTestId("request-line"))
             expect(screen.getByText(payloadString)).toBeInTheDocument();
         })
 
@@ -50,7 +50,7 @@ describe("the interaction", () => {
                 <div>{dummyElement}</div>
                 <Interaction request={interaction}/></div>);
 
-            await user.hover(screen.getByText(methodName))
+            await user.hover(screen.getByTestId("request-line"))
             expect(screen.getByText(payloadString)).toBeInTheDocument();
 
             await user.hover(screen.getByText(dummyElement))
