@@ -17,9 +17,8 @@ const OrderSequenceDisplay = styled.div`
   transition: all .5s ease;
   color: #41403E;
   font-size: 1.5rem;
-  letter-spacing: 1px;
   outline: none;
-  
+
 `
 
 
