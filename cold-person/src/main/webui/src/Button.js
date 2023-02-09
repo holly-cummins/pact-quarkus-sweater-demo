@@ -5,6 +5,16 @@ import styled from "styled-components"
 
 const SweaterOrderer = styled.div`
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+`
+
+const PushButton = styled.button`
+  margin-top: 10px;
+`
+
+const Prompt = styled.div`
+  margin-bottom: 10px;
 `
 
 const Button = () => {
@@ -41,14 +51,16 @@ const Button = () => {
     return (
         <>
             <SweaterOrderer>
+                <Prompt>What colour sweater would you like?</Prompt>
                 <input
                     type="text"
                     className="form-control"
                     onChange={handleColourChange}
+                    value={colour}
                 />
-                <button type="submit" onClick={handleSubmit}>
+                <PushButton type="submit" onClick={handleSubmit}>
                     Order
-                </button>
+                </PushButton>
             </SweaterOrderer>
             <div className="sweaters-container">
                 {sweaters.map((sweater) => {
