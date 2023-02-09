@@ -30,7 +30,7 @@ const OrderSequence = ({orderNumber, interactions}) => {
     return (
 
         <OrderSequenceDisplay>
-            <OrderNumber>#{orderNumber}</OrderNumber>
+            <OrderNumber>#{orderNumber ? orderNumber : "??"}</OrderNumber>
             {sortedInteractions?.map((interaction) => {
                 return (
                     <Interaction key={interaction.id} interaction={interaction}/>
