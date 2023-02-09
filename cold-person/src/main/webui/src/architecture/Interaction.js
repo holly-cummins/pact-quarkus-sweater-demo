@@ -129,7 +129,7 @@ const Interaction = ({request, response}) => {
     const [isResponseOpen, setResponseOpen] = useState(false)
 
     const handleRequestOpen = () => {
-        setRequestOpen(true)
+        setRequestOpen(request?.payload) // Open, but do not open is there is no payload
     }
 
     const handleRequestClose = () => {
@@ -137,7 +137,7 @@ const Interaction = ({request, response}) => {
     }
 
     const handleResponseOpen = () => {
-        setResponseOpen(true)
+        setResponseOpen(response?.payload) // Open, but do not open is there is no payload
     }
 
     const handleResponseClose = () => {
