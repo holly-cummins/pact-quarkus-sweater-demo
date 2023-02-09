@@ -7,6 +7,10 @@ const arrowWidth = 180;
 const InteractionDisplay = styled.div`
   display: flex;
   flex-direction: row;
+
+  &:hover {
+    z-index: 1;
+  }
 `
 
 const Event = styled.div`
@@ -33,14 +37,6 @@ const Component = styled.div`
   outline: none;
 `
 
-const Payload = styled.div`
-  position: absolute;
-  opacity: 0.8;
-  background-color: white;
-  font-size: 1.5rem;
-  font-family: Monaco, Courier, monospace;
-`
-
 const Anchor = styled.div`
   position: relative;
   width: ${arrowWidth}px;
@@ -58,6 +54,8 @@ const Rough = styled.svg`
   filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .7));
 
   &:hover {
+    z-index: 2;
+    opacity: 0.2;
     -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, .7));
     filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, .7));
   }
@@ -69,6 +67,25 @@ const Rough = styled.svg`
   `}
 `
 // This height adjustment is super-fragile and hand-tuned in the non-centering case, and depends on the relationship between the aspect ratio of the viewbox and the parent dimensions
+
+
+const Payload = styled.pre`
+  position: absolute;
+  opacity: 0.9;
+  padding: 1rem;
+  background-color: white;
+  font-size: 1.5rem;
+  font-family: Monaco, Courier, monospace;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+
+  transform: translateY(-40px);
+  ${props => props.reverse && `
+  transform: translateY(30px);
+  `}
+
+`
+
 
 const MethodName = styled.div`
   height: 20px
@@ -90,6 +107,9 @@ const componentBox = (id) => {
     const node = rc.rectangle(10, 10, 180, 60);
     svg.appendChild(node);
 }
+
+const stringify = (payload) => JSON.stringify(payload, null, 2)
+
 
 const Interaction = ({request, response}) => {
     const requestSvg = "request-svg" + request?.id;
@@ -157,10 +177,10 @@ const Interaction = ({request, response}) => {
             </Component>
 
             {isRequestOpen && (<Payload>
-                {JSON.stringify(request?.payload)}
+                {stringify(request?.payload)}
             </Payload>)}
-            {isResponseOpen && (<Payload>
-                {JSON.stringify(response?.payload)}
+            {isResponseOpen && (<Payload reverse={true}>
+                {stringify(response?.payload)}
             </Payload>)}
         </InteractionDisplay>
     );
