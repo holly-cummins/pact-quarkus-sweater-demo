@@ -23,14 +23,7 @@ public class RecorderResource {
     @Path("/component")
     @POST
     public long addComponent(Component component) {
-
-        // Components should be unique, so do a simple deduplication
-        Component.find("name", component.getName()).count().subscribe().with(count -> {
-            if (count.equals(0L)) {
-                component.persistOrUpdate().subscribe().with(c -> System.out.println("\uD83C\uDFA5 [recorder] registered component " + ((Component) c).getName()));
-            }
-        });
-
+        component.persistOrUpdate().subscribe().with(c -> System.out.println("\uD83C\uDFA5 [recorder] registered component " + ((Component) c).getName()));
         // This really should be the id we just created, but that's too much reactive programming for one day
         return 0;
     }
