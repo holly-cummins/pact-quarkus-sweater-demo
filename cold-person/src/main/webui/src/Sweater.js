@@ -8,7 +8,8 @@ const OrderNumber = styled.span`
 const Sweater = ({sweater}) => {
     return (
         <div className="sweater-card">
-            <p><OrderNumber>#{sweater.orderNumber}</OrderNumber>Your new sweater is a nice {sweater.colour} sweater.</p>
+            <p><OrderNumber>#{sweater.orderNumber}</OrderNumber>Your new sweater is
+                a {sweater.colour ? `nice ${sweater.colour}` : "totally undescribable"} sweater.</p>
         </div>
     );
 };
