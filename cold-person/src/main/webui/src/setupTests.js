@@ -5,6 +5,7 @@
 import "@testing-library/jest-dom/extend-expect";
 
 import EventSource from 'eventsourcemock';
+import 'jest-canvas-mock';
 
 Object.defineProperty(window, 'EventSource', {
     value: EventSource,

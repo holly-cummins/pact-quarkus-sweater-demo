@@ -6,10 +6,12 @@
     "axios": "^1.2.6",
     "eventsourcemock": "^2.0.0",
     "fontsource-open-sans": "^4.0.0",
+    "jest-canvas-mock": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "react-table-6": "^6.11.0",
+    "roughjs": "^4.5.2",
     "styled-components": "^5.3.6",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^3.1.1"

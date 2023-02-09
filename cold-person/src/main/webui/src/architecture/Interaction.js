@@ -1,5 +1,12 @@
 import styled from "styled-components"
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import rough from "roughjs/bundled/rough.cjs.js";
+
+const roughness = 2.8
+const componentHeight = 90;
+const componentWidth = 80;
+const canvasPadding = 20;
+const arrowWidth = 180;
 
 const InteractionDisplay = styled.div`
   display: flex;
@@ -9,41 +16,31 @@ const InteractionDisplay = styled.div`
 const Event = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  background-color: grey;
+  width: 200px;
+  align-items: center;
 `
 
 const Component = styled.div`
   align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: transparent;
-  padding: 1rem 1rem;
+  height: 5rem;
   margin: 1rem;
   transition: all .5s ease;
-  color: #41403E;
+  border: 1px solid deeppink;
   font-size: 1.25rem;
   text-align: center;
   letter-spacing: 1px;
   outline: none;
   box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
 
-  border-top-left-radius: 255px 25px;
-  border-top-right-radius: 15px 225px;
-  border-bottom-right-radius: 225px 15px;
-  border-bottom-left-radius: 15px 255px;
-
-  /*
-  Above is shorthand for:
-  border-top-left-radius: 255px 15px;
-  border-top-right-radius: 15px 225px;
-  border-bottom-right-radius: 225px 15px;
-  border-bottom-left-radius:15px 255px;
-  */
-
   &:hover {
     box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .2);
   }
-
-  border-width: 4px;
-  border-style: solid;
-  border-color: ${props => props.isException ? "#993300" : "#41403E"};
 
 `
 
@@ -51,15 +48,56 @@ const Payload = styled.div`
   position: absolute;
   opacity: 0.8;
   background-color: white;
+`
 
+const Anchor = styled.div`
+  position: relative;
+  border: 1px solid blue;
+  width: ${arrowWidth}px;
+  height: 5px;
+`
+
+const Rough = styled.svg`
+  border: 1px solid red;
+  position: absolute;
+  left: 0;
+  top: -5px;
+`
+
+// If we don't set a height, this will take the width of the parent anchor, which is what we want
+const CentredRough = styled.svg`
+  border: 1px solid red;
+  position: absolute;
+  left: 0;
+  transform: translateY(-50%);
+`
+
+const MethodName = styled.div`
+  border: 1px solid yellow;
+
+  height: 20px
 `
 
 const Interaction = ({interaction}) => {
+    const eventSvg = "event-svg" + interaction.payload.orderNumber + interaction.methodName;
+    const componentSvg = "component-svg" + interaction.payload.orderNumber + interaction.owningComponent
+
+    useEffect(() => {
+        let svg = document.getElementById(eventSvg);
+        let rc = rough.svg(svg);
+        let node = rc.line(10, 10, 90, 10);
+        svg.appendChild(node);
+
+        svg = document.getElementById(componentSvg);
+        rc = rough.svg(svg);
+        node = rc.rectangle(10, 10, 180, 80);
+        svg.appendChild(node);
+    }, [])
 
     const [isOpen, setOpen] = useState(false)
 
     const handleOpen = () => {
-        setOpen(true)
+        //setOpen(true)
     }
 
     const handleClose = () => {
@@ -68,14 +106,34 @@ const Interaction = ({interaction}) => {
 
     const isException = interaction.payload.exception != null;
 
+    console.log("rendering", interaction.payload.orderNumber, interaction.owningComponent)
     return (
 
         <InteractionDisplay onMouseOver={handleOpen}
                             onMouseOut={handleClose} isException={isException}>
             <Event>
-                {interaction.methodName}
+
+
+                <MethodName> {interaction.methodName}</MethodName>
+                <Anchor id={"some-id"}>
+                    <CentredRough id={eventSvg} viewBox="0 0 100 20">
+                        <circle cx={50} cy={50} r={10} fill="red"/>
+                    </CentredRough>
+                </Anchor>
+                <MethodName/> {/*Cheat and add centreing padding with a div*/}
             </Event>
-            <Component>{interaction.owningComponent}</Component>
+
+
+            <Component>
+
+                <Anchor>
+
+                    <Rough id={componentSvg} viewBox="0 0 200 100">
+                    </Rough>
+                </Anchor>
+                {interaction.owningComponent}
+                <Anchor/>
+            </Component>
 
             {isOpen && (<Payload>
                 {JSON.stringify(interaction.payload)}
