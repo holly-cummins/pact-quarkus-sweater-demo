@@ -15,7 +15,7 @@ public class WoolResource {
         } catch (IllegalArgumentException e) {
             sheep = Sheep.white;
         }
-        Skein skein = new Skein(sheep);
+        Skein skein = new Skein(sheep, order.getOrderNumber());
         return skein;
     }
 }

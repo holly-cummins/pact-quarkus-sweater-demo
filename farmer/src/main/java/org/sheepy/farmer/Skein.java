@@ -2,7 +2,8 @@ package org.sheepy.farmer;
 
 public class Skein {
     private String colour;
-    private String weight;
+    private Weight weight;
+    private int orderNumber;
 
     public Skein() {
     }
@@ -12,8 +13,10 @@ public class Skein {
      *
      * @param sheep the sheep whose wool will be spun into a skein of yarn
      */
-    public Skein(Sheep sheep) {
+    public Skein(Sheep sheep, int orderNumber) {
         this.colour = sheep.name();
+        this.orderNumber = orderNumber;
+        this.weight = Weight.Worsted;
     }
 
     public String getColour() {
@@ -25,12 +28,19 @@ public class Skein {
     }
 
 
-    public String getWeight() {
+    public Weight getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(Weight weight) {
         this.weight = weight;
     }
 
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 }
