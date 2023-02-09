@@ -7,6 +7,7 @@ public class Interaction extends ReactivePanacheMongoEntity {
     String owningComponent;
     String payload;
     long timestamp;
+    Type type;
 
     public String getMethodName() {
         return methodName;
@@ -30,6 +31,14 @@ public class Interaction extends ReactivePanacheMongoEntity {
 
     public void setPayload(String payload) {
         this.payload = payload;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public long getTimestamp() {
