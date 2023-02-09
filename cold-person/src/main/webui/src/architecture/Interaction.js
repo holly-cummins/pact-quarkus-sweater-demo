@@ -2,10 +2,6 @@ import styled from "styled-components"
 import {useEffect, useState} from "react";
 import rough from "roughjs/bundled/rough.cjs.js";
 
-const roughness = 2.8
-const componentHeight = 90;
-const componentWidth = 80;
-const canvasPadding = 20;
 const arrowWidth = 180;
 
 const InteractionDisplay = styled.div`
@@ -35,8 +31,6 @@ const Component = styled.div`
   text-align: center;
   letter-spacing: 1px;
   outline: none;
-
-
 `
 
 const Payload = styled.div`
@@ -75,30 +69,34 @@ const MethodName = styled.div`
   height: 20px
 `
 
+const eventLine = (id, isException) => {
+    const svg = document.getElementById(id);
+    const rc = rough.svg(svg);
+    const node = rc.line(10, 0, 90, 0, {stroke: isException ? "crimson" : "black"});
+    svg.appendChild(node);
+    const arrowHead = rc.path("M85,-5l5,5l-5,5", {stroke: isException ? "crimson" : "black"})
+    svg.appendChild(arrowHead)
+
+}
+
+const componentBox = (id) => {
+    const svg = document.getElementById(id);
+    const rc = rough.svg(svg);
+    const node = rc.rectangle(10, 10, 180, 60);
+    svg.appendChild(node);
+}
+
 const Interaction = ({interaction}) => {
     const eventSvg = "event-svg" + interaction.id;
     const componentSvg = "component-svg" + interaction.id
-
-    const eventLine = () => {
-        const svg = document.getElementById(eventSvg);
-        const rc = rough.svg(svg);
-        let node = rc.line(10, 10, 90, 10, {stroke: isException ? "crimson" : "black"});
-        svg.appendChild(node);
-    }
-
-    const componentBox = () => {
-        const svg = document.getElementById(componentSvg);
-        const rc = rough.svg(svg);
-        const node = rc.rectangle(10, 10, 180, 60);
-        svg.appendChild(node);
-    }
+    const isException = interaction.payload.exception != null;
 
     useEffect(() => {
-        eventLine()
-        componentBox()
+        eventLine(eventSvg, isException)
+        componentBox(componentSvg)
 
 
-    }, [])
+    }, [eventSvg, componentSvg, isException])
 
     const [isOpen, setOpen] = useState(false)
 
@@ -110,7 +108,6 @@ const Interaction = ({interaction}) => {
         setOpen(false)
     }
 
-    const isException = interaction.payload.exception != null;
 
     return (
 
@@ -119,7 +116,7 @@ const Interaction = ({interaction}) => {
                    onMouseOut={handleClose} isException={isException}>
                 <MethodName> {interaction.methodName}</MethodName>
                 <Anchor id={"some-id"}>
-                    <Rough center={true} id={eventSvg} viewBox="0 0 100 20">
+                    <Rough center={true} id={eventSvg} viewBox="0 -15 100 30">
                     </Rough>
                 </Anchor>
                 <MethodName/> {/*Cheat and add centring padding with a div*/}

@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import Interactions from "./Interactions";
-import Components from "./Components";
 
 const ArchitectureDisplay = styled.div`
   display: flex;
@@ -14,7 +13,7 @@ const Architecture = () => {
     return (
 
         <ArchitectureDisplay>
-            <Components/>
+            {/*<Components/> Do not draw the components until we have extracted common code for the rough.js style*/}
 
             <Interactions/>
         </ArchitectureDisplay>

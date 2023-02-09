@@ -18,7 +18,8 @@ describe("the architecture view", () => {
         axios.get.mockResolvedValue({data});
     });
 
-    test("includes all the component names", async () => {
+    // Components have been temporarily removed
+    xtest("includes all the component names", async () => {
         render(<Architecture/>);
         let el = await screen.findByText(/fizzwhuzz/i);
         expect(el).toBeInTheDocument();
