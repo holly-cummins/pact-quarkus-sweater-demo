@@ -20,6 +20,8 @@ public class RestExceptionMapper
         Interaction interaction = new Interaction();
         interaction.setPayload("{\"exception\": \"" + e.getMessage() + "\"}");
         interaction.setOwningComponent(appConfig.name());
+        // For now, consider the exceptions to be requests
+        interaction.setType(Type.Request);
         recorder.recordInteraction(interaction);
 
         // We lose some detail about the exceptions here, especially for 404, but we will live with that

@@ -4,6 +4,7 @@ public class Interaction {
     String methodName;
     String owningComponent;
     String payload;
+    Type type;
 
     public String getMethodName() {
         return methodName;
@@ -27,5 +28,13 @@ public class Interaction {
 
     public void setPayload(String payload) {
         this.payload = payload;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }

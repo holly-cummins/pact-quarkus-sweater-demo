@@ -35,6 +35,7 @@ public class InteractionInterceptor {
         interaction.setMethodName(method.getName());
         interaction.setOwningComponent(appConfig.name());
         interaction.setPayload(payload);
+        interaction.setType(Type.Request);
 
         recorder.recordInteraction(interaction);
 

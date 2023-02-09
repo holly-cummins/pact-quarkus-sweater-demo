@@ -23,14 +23,19 @@ public class RecorderService {
         this.client = ClientBuilder.newClient();
     }
 
+
     private boolean isTestProfile() {
-        return "test".equals(profile.profile());
+        if (profile != null) {
+            return "test".equals(profile.profile());
+        } else {
+            return false;
+        }
     }
 
     public void log(String message) {
         if (!isTestProfile()) {
             try {
-                client.target(config.baseURL).path("log")
+                client.target(getBaseURL()).path("log")
                         .request(MediaType.TEXT_PLAIN).post(Entity.text(message));
                 // Don't log anything back about the response or it ends up with too much circular logging
             } catch (Throwable e) {
@@ -39,16 +44,24 @@ public class RecorderService {
         }
     }
 
+    private String getBaseURL() {
+        if (config != null) {
+            return config.baseURL;
+        } else {
+            return "http://localhost:8088/recorder/";
+        }
+    }
+
     public void registerComponent(String name) {
         if (!isTestProfile()) {
             Component component = new Component(name);
 
             try {
-                client.target(config.baseURL).path("component")
+                client.target(getBaseURL()).path("component")
                         .request(MediaType.APPLICATION_JSON)
                         .post(Entity.json(component));
             } catch (Throwable e) {
-                System.out.println(LOG_PREFIX + "Connection error: " + e);
+                System.out.println(LOG_PREFIX + "Could not register component: " + e);
             }
         }
     }
@@ -56,12 +69,12 @@ public class RecorderService {
     public void recordInteraction(Interaction interaction) {
         if (!isTestProfile()) {
             try {
-                client.target(config.baseURL).path("interaction")
+                client.target(getBaseURL()).path("interaction")
                         .request(MediaType.APPLICATION_JSON)
                         .post(Entity.json(interaction));
 
             } catch (Throwable e) {
-                System.out.println(LOG_PREFIX + "Connection error: " + e);
+                System.out.println(LOG_PREFIX + "Could not record interaction: " + e);
             }
         }
     }

@@ -4,14 +4,18 @@ import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.AnnotationsTransformerBuildItem;
 import io.quarkus.arc.deployment.BeanContainerBuildItem;
 import io.quarkus.arc.processor.AnnotationsTransformer;
+import io.quarkus.deployment.Capabilities;
+import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.LogHandlerBuildItem;
+import io.quarkus.resteasy.reactive.spi.ContainerResponseFilterBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
 import org.jboss.jandex.DotName;
 import org.sheepy.observer.runtime.ComponentRecorder;
+import org.sheepy.observer.runtime.Filter;
 import org.sheepy.observer.runtime.InteractionInterceptor;
 import org.sheepy.observer.runtime.LogHandlerMaker;
 import org.sheepy.observer.runtime.ObserverLog;
@@ -51,6 +55,7 @@ class ObserverProcessor {
     @BuildStep
     void beans(BuildProducer<AdditionalBeanBuildItem> producer) {
         producer.produce(AdditionalBeanBuildItem.unremovableOf(InteractionInterceptor.class));
+        producer.produce(AdditionalBeanBuildItem.unremovableOf(Filter.class));
         producer.produce(AdditionalBeanBuildItem.unremovableOf(RecorderService.class));
     }
 
@@ -71,6 +76,25 @@ class ObserverProcessor {
                 }
             }
         });
+    }
+
+    @BuildStep
+    void registerResteasyReactiveProvider(
+            Capabilities capabilities,
+            BuildProducer<ContainerResponseFilterBuildItem> containerRequestFilterBuildItemBuildProducer) {
+
+        boolean isResteasyReactiveAvailable = capabilities.isPresent(Capability.RESTEASY_REACTIVE);
+
+        if (!isResteasyReactiveAvailable) {
+            System.out.println("No Rest Easy Reactive, no instrumentation");
+            // if RestEasy is not available then no need to continue
+            return;
+        }
+
+
+        containerRequestFilterBuildItemBuildProducer
+                .produce(new ContainerResponseFilterBuildItem.Builder(Filter.class.getName())
+                        .build());
     }
 
     @BuildStep
