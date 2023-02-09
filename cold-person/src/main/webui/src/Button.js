@@ -20,7 +20,7 @@ const Prompt = styled.div`
 const Button = () => {
     const [sweaters, setSweaters] = useState([]);
     const [colour, setColour] = useState("");
-    const [orderNumber, setOrderNumber] = useState(0);
+    const [orderNumber, setOrderNumber] = useState(1);
 
     const handleSubmit = async () => {
         const newOrderNumber = orderNumber + 1

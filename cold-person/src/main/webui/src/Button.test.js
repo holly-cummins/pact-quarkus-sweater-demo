@@ -10,7 +10,7 @@ import axios from "axios";
 axios.defaults.adapter = require("axios/lib/adapters/http");
 jest.mock("axios");
 
-let orderNumber = 0
+let orderNumber = 1
 const incrementedOrderNumber = () => orderNumber++;
 
 describe("the order sweater button", () => {
