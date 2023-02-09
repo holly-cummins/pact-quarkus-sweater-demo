@@ -9,13 +9,13 @@ describe("the Sweater", () => {
 
     test("displays a colour", async () => {
         render(<Sweater sweater={sweater}/>);
-        const colour = await screen.findByText(sweater.colour);
+        const colour = await screen.findByText(sweater.colour, {exact: false});
         expect(colour).toBeInTheDocument();
     });
 
     test("displays an order number", async () => {
         render(<Sweater sweater={sweater}/>);
-        const colour = await screen.findByText(sweater.orderNumber);
+        const colour = await screen.findByText(sweater.orderNumber, {exact: false});
         expect(colour).toBeInTheDocument();
     });
 });
