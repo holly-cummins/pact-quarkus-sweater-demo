@@ -37,8 +37,8 @@ const Payload = styled.div`
   position: absolute;
   opacity: 0.8;
   background-color: white;
-  font-size: 1rem;
-  font-family: Monaco, Courier, monospace;;
+  font-size: 1.5rem;
+  font-family: Monaco, Courier, monospace;
 `
 
 const Anchor = styled.div`
@@ -61,6 +61,11 @@ const Rough = styled.svg`
     -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, .7));
     filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, .7));
   }
+  `}
+
+  ${props => props.reverse && `
+  -webkit-transform: scaleX(-1);
+   transform: scaleX(-1);
   `}
 `
 // This height adjustment is super-fragile and hand-tuned in the non-centering case, and depends on the relationship between the aspect ratio of the viewbox and the parent dimensions
@@ -86,37 +91,55 @@ const componentBox = (id) => {
     svg.appendChild(node);
 }
 
-const Interaction = ({interaction}) => {
-    const eventSvg = "event-svg" + interaction.id;
-    const componentSvg = "component-svg" + interaction.id
-    const isException = interaction.payload.exception != null;
+const Interaction = ({request, response}) => {
+    const requestSvg = "request-svg" + request?.id;
+    const responseSvg = "response-svg" + response?.id;
+    const componentSvg = "component-svg" + request?.id
+    const isException = request?.payload?.exception != null;
 
     useEffect(() => {
-        eventLine(eventSvg, isException)
+        request && eventLine(requestSvg, isException)
+        response && eventLine(responseSvg, isException)
+
         componentBox(componentSvg)
 
+    }, [request, response, requestSvg, responseSvg, componentSvg, isException])
 
-    }, [eventSvg, componentSvg, isException])
+    const [isRequestOpen, setRequestOpen] = useState(false)
+    const [isResponseOpen, setResponseOpen] = useState(false)
 
-    const [isOpen, setOpen] = useState(false)
-
-    const handleOpen = () => {
-        setOpen(true)
+    const handleRequestOpen = () => {
+        setRequestOpen(true)
     }
 
-    const handleClose = () => {
-        setOpen(false)
+    const handleRequestClose = () => {
+        setRequestOpen(false)
     }
 
+    const handleResponseOpen = () => {
+        setResponseOpen(true)
+    }
+
+    const handleResponseClose = () => {
+        setResponseOpen(false)
+    }
 
     return (
 
         <InteractionDisplay>
-            <Event onMouseOver={handleOpen}
-                   onMouseOut={handleClose} isException={isException}>
-                <MethodName> {interaction.methodName}</MethodName>
-                <Anchor id={"some-id"}>
-                    <Rough center={true} id={eventSvg} viewBox="0 -15 100 30">
+            <Event isException={isException}>
+                <MethodName onMouseOver={handleRequestOpen}
+                            onMouseOut={handleRequestClose}> {request?.methodName}</MethodName>
+                <Anchor>
+                    <Rough shadow={true} onMouseOver={handleRequestOpen}
+                           onMouseOut={handleRequestClose} center={true} id={requestSvg} viewBox="0 -15 100 30">
+                    </Rough>
+                </Anchor>
+                <Anchor>
+                    <Rough shadow={true} onMouseOver={handleResponseOpen}
+                           onMouseOut={handleResponseClose} data-testid="response-line" center={true} reverse={true}
+                           id={responseSvg}
+                           viewBox="0 -15 100 30">
                     </Rough>
                 </Anchor>
                 <MethodName/> {/*Cheat and add centring padding with a div*/}
@@ -126,15 +149,18 @@ const Interaction = ({interaction}) => {
             <Component>
 
                 <Anchor>
-                    <Rough shadow={true} id={componentSvg} viewBox="0 0 200 80">
+                    <Rough id={componentSvg} viewBox="0 0 200 80">
                     </Rough>
                 </Anchor>
-                {interaction.owningComponent}
+                {request?.owningComponent}
                 <Anchor/>
             </Component>
 
-            {isOpen && (<Payload>
-                {JSON.stringify(interaction.payload)}
+            {isRequestOpen && (<Payload>
+                {JSON.stringify(request?.payload)}
+            </Payload>)}
+            {isResponseOpen && (<Payload>
+                {JSON.stringify(response?.payload)}
             </Payload>)}
         </InteractionDisplay>
     );

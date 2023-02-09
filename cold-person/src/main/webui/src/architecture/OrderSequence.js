@@ -23,17 +23,28 @@ const OrderSequenceDisplay = styled.div`
 
 
 const OrderSequence = ({orderNumber, interactions}) => {
-    // We've lost a bit of generic-ness here;
-    // ideally we would sort by timestamp instead
-    const sortedInteractions = interactions?.filter(interaction => interaction.payload.orderNumber === orderNumber).sort((a, b) => a.timestamp - b.timestamp)
+
+    const interactionsWithCollapsedComponents = interactions.reduce((acc, interaction) => {
+        let pair = acc.find(el => el.component === interaction.owningComponent)
+        if (!pair) {
+            pair = {component: interaction.owningComponent}
+            acc.push(pair);
+        }
+        pair[interaction.type?.toLowerCase()] = interaction;
+
+        return acc;
+    }, [])
+
+    const sortedInteractions = interactionsWithCollapsedComponents.sort((a, b) => a.request?.timestamp - b.request?.timestamp)
 
     return (
 
         <OrderSequenceDisplay>
             <OrderNumber>#{orderNumber ? orderNumber : "??"}</OrderNumber>
-            {sortedInteractions?.map((interaction) => {
+            {sortedInteractions?.map((pair) => {
                 return (
-                    <Interaction key={interaction.id} interaction={interaction}/>
+                    <Interaction key={pair.request?.id || pair.response?.id} request={pair.request}
+                                 response={pair.response}/>
                 );
             })}
         </OrderSequenceDisplay>

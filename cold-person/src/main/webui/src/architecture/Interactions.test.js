@@ -18,19 +18,42 @@ const payload = (orderNumber) => JSON.stringify({fred: "mabel", orderNumber});
 
 
 describe("the interaction view", () => {
-    const payloadString = /mabel/;
     const name = "widget"
-    const interaction1 = {methodName: name + 1, payload: payload(1), id: 1};
-    const interaction1a = {methodName: "other" + name, payload: payload(1), id: 11};
-    const interaction2 = {methodName: name + 2, payload: payload(2), id: 12};
-    const interaction3 = {methodName: name + 3, payload: payload(3), id: 13};
+    const interaction1 = {
+        methodName: name + 1,
+        owningComponent: "component1",
+        type: "request",
+        payload: payload(1),
+        id: 1
+    };
+    const interaction1a = {
+        methodName: "other" + name,
+        owningComponent: "component2",
+        type: "request",
+        payload: payload(1),
+        id: 11
+    };
+    const interaction2 = {
+        methodName: name + 2,
+        owningComponent: "component3",
+        type: "request",
+        payload: payload(2),
+        id: 12
+    };
+    const interaction3 = {
+        methodName: name + 3,
+        owningComponent: "component4",
+        type: "request",
+        payload: payload(3),
+        id: 13
+    };
 
     const data = [interaction1, interaction2, interaction1a, interaction3];
 
     beforeEach(() => {
     });
 
-    test("has some interactions ", async () => {
+    test("has some interactions", async () => {
         render(<Interactions/>);
 
         emit(data)
@@ -57,10 +80,11 @@ describe("the interaction view", () => {
         expect(el).toBeInTheDocument();
     });
 
-    test("reverse-sorts by order number", async () => {
+    test("filters and reverse-sorts by order number", async () => {
         render(<Interactions/>);
         emit(data)
 
+        // This checks each element is in the page once
         let el1 = await screen.findByText(/widget1/i);
         expect(el1).toBeInTheDocument();
 
@@ -88,5 +112,6 @@ describe("the interaction view", () => {
         expect(el2.compareDocumentPosition(el1) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 
     });
+
 
 });

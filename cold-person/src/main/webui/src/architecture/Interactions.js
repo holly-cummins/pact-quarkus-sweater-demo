@@ -40,13 +40,16 @@ const Interactions = () => {
     // if we did it eslint's way we would have an infinite loop
 
     const orderNumbers = [...new Set(interactions.map(interaction => interaction.payload?.orderNumber))].sort().reverse();
-    
+
     return (
         <InteractionDisplay>
 
             {orderNumbers?.map((orderNumber) => {
+                // We've lost a bit of generic-ness here;
+                const interactionsForThisOrder = interactions?.filter(interaction => interaction.payload?.orderNumber === orderNumber)
+
                 return (
-                    <OrderSequence key={orderNumber} orderNumber={orderNumber} interactions={interactions}/>
+                    <OrderSequence key={orderNumber} orderNumber={orderNumber} interactions={interactionsForThisOrder}/>
                 );
             })}
 
