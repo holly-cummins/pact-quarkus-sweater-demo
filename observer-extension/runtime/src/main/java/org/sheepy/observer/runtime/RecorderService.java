@@ -25,11 +25,7 @@ public class RecorderService {
 
 
     private boolean isTestProfile() {
-        if (profile != null) {
-            return "test".equals(profile.profile());
-        } else {
-            return false;
-        }
+        return "test".equals(profile.profile());
     }
 
     public void log(String message) {
@@ -45,11 +41,7 @@ public class RecorderService {
     }
 
     private String getBaseURL() {
-        if (config != null) {
-            return config.baseURL;
-        } else {
-            return "http://localhost:8088/recorder/";
-        }
+        return config.baseURL;
     }
 
     public void registerComponent(String name) {
