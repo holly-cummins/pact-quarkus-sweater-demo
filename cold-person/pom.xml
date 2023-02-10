@@ -49,6 +49,7 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-rest-client-reactive-jackson</artifactId>
     </dependency>
+    <!-- This instruments the application to self-visualise in the demo console -->
     <dependency>
       <groupId>org.sheepy</groupId>
       <artifactId>observer-extension</artifactId>

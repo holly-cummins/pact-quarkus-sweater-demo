@@ -40,6 +40,7 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-reactive</artifactId>
     </dependency>
+    <!-- This instruments the application to self-visualise in the demo console -->
     <dependency>
       <groupId>org.sheepy</groupId>
       <artifactId>observer-extension</artifactId>
