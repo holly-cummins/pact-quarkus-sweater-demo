@@ -6,6 +6,7 @@ public class Interaction extends ReactivePanacheMongoEntity {
     String methodName;
     String owningComponent;
     String payload;
+    String correlationId;
     long timestamp;
     Type type;
 
@@ -47,5 +48,13 @@ public class Interaction extends ReactivePanacheMongoEntity {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 }

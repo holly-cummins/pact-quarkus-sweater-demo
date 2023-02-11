@@ -4,6 +4,7 @@ public class Interaction {
     String methodName;
     String owningComponent;
     String payload;
+    String correlationId;
     Type type;
 
     public String getMethodName() {
@@ -36,5 +37,13 @@ public class Interaction {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 }

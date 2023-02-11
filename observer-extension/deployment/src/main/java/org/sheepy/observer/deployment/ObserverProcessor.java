@@ -14,7 +14,9 @@ import io.quarkus.deployment.builditem.LogHandlerBuildItem;
 import io.quarkus.resteasy.reactive.spi.ContainerResponseFilterBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
 import org.jboss.jandex.DotName;
+import org.sheepy.observer.runtime.ClientFilter;
 import org.sheepy.observer.runtime.ComponentRecorder;
+import org.sheepy.observer.runtime.CorrelationId;
 import org.sheepy.observer.runtime.Filter;
 import org.sheepy.observer.runtime.InteractionInterceptor;
 import org.sheepy.observer.runtime.LogHandlerMaker;
@@ -31,6 +33,9 @@ class ObserverProcessor {
     private static final String FEATURE = "observer-extension";
     private static final DotName JAX_RS_GET = DotName.createSimple("javax.ws.rs.GET");
     private static final DotName JAX_RS_POST = DotName.createSimple("javax.ws.rs.POST");
+    private static final DotName CLIENT_FILTER = DotName.createSimple(ClientFilter.class.getName());
+    private static final DotName REGISTER_REST_CLIENT = DotName.createSimple("org.eclipse.microprofile.rest.client.inject.RestClient");
+    private static final DotName OIDC_CLIENT_REQUEST_REACTIVE_FILTER = DotName.createSimple("org.eclipse.microprofile.rest.client.inject.RegisterRestClient");
 
     @BuildStep
     FeatureBuildItem feature() {
@@ -56,7 +61,9 @@ class ObserverProcessor {
     void beans(BuildProducer<AdditionalBeanBuildItem> producer) {
         producer.produce(AdditionalBeanBuildItem.unremovableOf(InteractionInterceptor.class));
         producer.produce(AdditionalBeanBuildItem.unremovableOf(Filter.class));
+        producer.produce(AdditionalBeanBuildItem.unremovableOf(ClientFilter.class));
         producer.produce(AdditionalBeanBuildItem.unremovableOf(RecorderService.class));
+        producer.produce(AdditionalBeanBuildItem.unremovableOf(CorrelationId.class));
     }
 
     @BuildStep
@@ -70,10 +77,12 @@ class ObserverProcessor {
             public void transform(TransformationContext context) {
                 if (context.getTarget().asMethod().hasAnnotation(JAX_RS_GET)) {
                     context.transform().add(ObserverLog.class).done();
+
                 }
                 if (context.getTarget().asMethod().hasAnnotation(JAX_RS_POST)) {
                     context.transform().add(ObserverLog.class).done();
                 }
+
             }
         });
     }
@@ -86,7 +95,7 @@ class ObserverProcessor {
         boolean isResteasyReactiveAvailable = capabilities.isPresent(Capability.RESTEASY_REACTIVE);
 
         if (!isResteasyReactiveAvailable) {
-            System.out.println("No Rest Easy Reactive, no instrumentation");
+            System.out.println("Rest Easy Reactive is not present, so no instrumentation will be added.");
             // if RestEasy is not available then no need to continue
             return;
         }

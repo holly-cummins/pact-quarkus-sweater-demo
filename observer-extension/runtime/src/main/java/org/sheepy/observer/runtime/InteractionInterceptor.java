@@ -6,19 +6,25 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @ObserverLog
 @Interceptor
 public class InteractionInterceptor {
+    private static final Pattern pattern = Pattern.compile(".*\"orderNumber\":([0-9]*).*");
+
     private final RecorderService recorder;
     private final ObjectMapper mapper;
     private final QuarkusConfig appConfig;
+    private final CorrelationId correlationId;
 
-    public InteractionInterceptor(RecorderService recorder, QuarkusConfig appConfig, ObjectMapper mapper) {
+    public InteractionInterceptor(RecorderService recorder, QuarkusConfig appConfig, ObjectMapper mapper, CorrelationId correlationId) {
         this.recorder = recorder;
         this.appConfig = appConfig;
         this.mapper = mapper;
+        this.correlationId = correlationId;
     }
 
     @AroundInvoke
@@ -31,11 +37,21 @@ public class InteractionInterceptor {
         for (Object o : context.getParameters()) {
             payload += mapper.writeValueAsString(o);
         }
+
         Interaction interaction = new Interaction();
         interaction.setMethodName(method.getName());
         interaction.setOwningComponent(appConfig.name());
         interaction.setPayload(payload);
         interaction.setType(Type.Request);
+
+        // Quick and dirty hack
+        // Ideally we should read this from a header, not the payload, and it should be generic
+        Matcher matcher = pattern.matcher(payload);
+        if (matcher.find()) {
+            String match = matcher.group(1);
+            interaction.setCorrelationId(match);
+            correlationId.setCorrelationId(Integer.parseInt(match));
+        }
 
         recorder.recordInteraction(interaction);
 
