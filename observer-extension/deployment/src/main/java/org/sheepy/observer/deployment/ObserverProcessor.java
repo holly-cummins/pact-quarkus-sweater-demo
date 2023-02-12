@@ -3,17 +3,24 @@ package org.sheepy.observer.deployment;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.AnnotationsTransformerBuildItem;
 import io.quarkus.arc.deployment.BeanContainerBuildItem;
+import io.quarkus.arc.deployment.GeneratedBeanBuildItem;
 import io.quarkus.arc.processor.AnnotationsTransformer;
 import io.quarkus.deployment.Capabilities;
 import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.Record;
+import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.LogHandlerBuildItem;
+import io.quarkus.rest.client.reactive.deployment.DotNames;
+import io.quarkus.rest.client.reactive.deployment.RegisterProviderAnnotationInstanceBuildItem;
 import io.quarkus.resteasy.reactive.spi.ContainerResponseFilterBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.AnnotationValue;
 import org.jboss.jandex.DotName;
+import org.jboss.jandex.Type;
 import org.sheepy.observer.runtime.ClientFilter;
 import org.sheepy.observer.runtime.ComponentRecorder;
 import org.sheepy.observer.runtime.CorrelationId;
@@ -25,6 +32,8 @@ import org.sheepy.observer.runtime.RecorderService;
 import org.sheepy.observer.runtime.RestExceptionMapper;
 
 import javax.ws.rs.Priorities;
+import java.util.Collection;
+import java.util.List;
 
 import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 
@@ -34,8 +43,7 @@ class ObserverProcessor {
     private static final DotName JAX_RS_GET = DotName.createSimple("javax.ws.rs.GET");
     private static final DotName JAX_RS_POST = DotName.createSimple("javax.ws.rs.POST");
     private static final DotName CLIENT_FILTER = DotName.createSimple(ClientFilter.class.getName());
-    private static final DotName REGISTER_REST_CLIENT = DotName.createSimple("org.eclipse.microprofile.rest.client.inject.RestClient");
-    private static final DotName OIDC_CLIENT_REQUEST_REACTIVE_FILTER = DotName.createSimple("org.eclipse.microprofile.rest.client.inject.RegisterRestClient");
+    private static final DotName REGISTER_REST_CLIENT = DotName.createSimple("org.eclipse.microprofile.rest.client.inject.RegisterRestClient");
 
     @BuildStep
     FeatureBuildItem feature() {
@@ -104,6 +112,29 @@ class ObserverProcessor {
         containerRequestFilterBuildItemBuildProducer
                 .produce(new ContainerResponseFilterBuildItem.Builder(Filter.class.getName())
                         .build());
+    }
+
+    // Intercept all outgoing traffic and add our correlation headers onto it
+    // we pretend that @RegisterRestClient means @RegisterProvider(ClientFilter.class)
+    // This creates a dependency on rest client reactive, but we can live with that
+    @BuildStep
+    void clientFilterSupport(CombinedIndexBuildItem indexBuildItem, BuildProducer<GeneratedBeanBuildItem> generatedBean,
+                             BuildProducer<RegisterProviderAnnotationInstanceBuildItem> producer) {
+
+        Collection<AnnotationInstance> instances = indexBuildItem.getIndex().getAnnotations(REGISTER_REST_CLIENT);
+        for (AnnotationInstance instance : instances) {
+
+            final AnnotationValue valueAttr = createClassValue(CLIENT_FILTER);
+
+            String targetClass = instance.target().asClass().name().toString();
+            producer.produce(new RegisterProviderAnnotationInstanceBuildItem(targetClass, AnnotationInstance.create(
+                    DotNames.REGISTER_PROVIDER, instance.target(), List.of(valueAttr))));
+        }
+    }
+
+    private AnnotationValue createClassValue(DotName filter) {
+        return AnnotationValue.createClassValue("value",
+                Type.create(filter, Type.Kind.CLASS));
     }
 
     @BuildStep
