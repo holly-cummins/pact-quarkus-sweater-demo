@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import Interaction from "./Interaction";
-import {useMemo} from "react";
 
 const OrderNumber = styled.div`
   font-weight: bold;
@@ -54,7 +53,7 @@ const sortInteractions = (interactions) => {
 
 const OrderSequence = ({orderNumber, interactions}) => {
 
-    const sortedInteractions = useMemo(() => sortInteractions(interactions), [interactions.length])
+    const sortedInteractions = sortInteractions(interactions)
 
     return (
 
