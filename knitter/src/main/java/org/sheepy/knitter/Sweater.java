@@ -2,6 +2,7 @@ package org.sheepy.knitter;
 
 public class Sweater {
     private String colour;
+    private Style style;
     private int orderNumber;
 
     /**
@@ -13,6 +14,7 @@ public class Sweater {
     public Sweater(Skein wool, int orderNumber) {
         this.colour = wool.getColour();
         this.orderNumber = orderNumber;
+        this.style = Style.LongSleeved;
     }
 
     public String getColour() {
@@ -29,5 +31,13 @@ public class Sweater {
 
     public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
     }
 }
