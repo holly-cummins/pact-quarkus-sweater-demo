@@ -25,6 +25,10 @@ updates:
     directory: "architecture-recorder" # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "maven" # See documentation for possible values
+    directory: "observer-extension" # Location of package manifests
+    schedule:
+      interval: "weekly"
   - package-ecosystem: "github-actions"
     # Workflow files stored in the
     # default location of `.github/workflows`
