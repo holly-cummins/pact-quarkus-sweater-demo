@@ -39,17 +39,17 @@ const Interactions = () => {
     }, [interactions.length]) // eslint-disable-line
     // if we did it eslint's way we would have an infinite loop
 
-    const orderNumbers = [...new Set(interactions.map(interaction => interaction.payload?.orderNumber))].sort().reverse();
+    const correlationIds = [...new Set(interactions.map(interaction => interaction.correlationId))].sort().reverse();
 
     return (
         <InteractionDisplay>
 
-            {orderNumbers?.map((orderNumber) => {
-                // We've lost a bit of generic-ness here;
-                const interactionsForThisOrder = interactions?.filter(interaction => interaction.payload?.orderNumber === orderNumber)
+            {correlationIds?.map((correlationId) => {
+                const interactionsForThisOrder = interactions?.filter(interaction => interaction.correlationId === correlationId)
 
                 return (
-                    <OrderSequence key={orderNumber} orderNumber={orderNumber} interactions={interactionsForThisOrder}/>
+                    <OrderSequence key={correlationId} orderNumber={correlationId}
+                                   interactions={interactionsForThisOrder}/>
                 );
             })}
 

@@ -21,6 +21,9 @@ const OrderSequenceDisplay = styled.div`
 
 `
 
+const stripNulls = (obj) => {
+    return Object.entries(obj).reduce((a, [k, v]) => (v ? (a[k] = v, a) : a), {})
+}
 
 const OrderSequence = ({orderNumber, interactions}) => {
 
@@ -30,11 +33,22 @@ const OrderSequence = ({orderNumber, interactions}) => {
             pair = {component: interaction.owningComponent}
             acc.push(pair);
         }
-        pair[interaction.type?.toLowerCase()] = interaction;
+        // Don't overwrite existing interactions of this type for this component
+        const interactionType = interaction.type?.toLowerCase()
+        const existingInteraction = pair[interactionType];
+        if (!existingInteraction) {
+            pair[interactionType] = interaction;
+        } else {
+            // Instead, merge them
+            // Do a shallow merge rather than trying to do elaborate payload merges
+            // Do strip out keys where there isn't a value, though, or null can overwrite a populated value
+            pair[interactionType] = {...stripNulls(existingInteraction), ...stripNulls(interaction)};
+        }
 
         return acc;
     }, [])
 
+    // Sort by request time, not response time
     const sortedInteractions = interactionsWithCollapsedComponents.sort((a, b) => a.request?.timestamp - b.request?.timestamp)
 
     return (

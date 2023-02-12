@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import Interaction from "./Interaction";
 
 const ComponentName = styled.div`
   font-weight: bold;
@@ -41,19 +40,12 @@ const ComponentDisplay = styled.div`
 `
 
 
-const Component = ({component, interactions}) => {
-    // We've lost a bit of generic-ness here; ideally we would sort by timestamp instead
-    const sortedInteractions = interactions?.filter(interaction => interaction.owningComponent === component.name).sort((a, b) => b.payload?.orderNumber - a.payload?.orderNumber)
+const Component = ({component}) => {
 
     return (
 
         <ComponentDisplay>
             <ComponentName>{component.name}</ComponentName>
-            {sortedInteractions?.map((interaction) => {
-                return (
-                    <Interaction key={interaction.id} interaction={interaction}/>
-                );
-            })}
         </ComponentDisplay>
     );
 };

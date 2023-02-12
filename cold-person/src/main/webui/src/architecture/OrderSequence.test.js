@@ -1,6 +1,7 @@
 import React from "react";
 import {render, screen} from "@testing-library/react";
 import OrderSequence from "./OrderSequence";
+import userEvent from "@testing-library/user-event";
 
 
 describe("the order sequence", () => {
@@ -38,8 +39,8 @@ describe("the order sequence", () => {
         methodName: name + 3,
         type: "request",
         owningComponent: component3,
+        payload: null,
         id: 13,
-        payload: {orderNumber},
         timestamp: 2
     };
     const irrelevantInteraction = {
@@ -47,6 +48,15 @@ describe("the order sequence", () => {
         owningComponent: component3,
         id: 13,
         payload: {orderNumber: 1}
+    };
+    const payloadString = "some interesting distinctive content"
+    const duplicate = {
+        type: "request",
+        methodName: null,
+        owningComponent: component3,
+        id: 13,
+        payload: {something: payloadString},
+        timestamp: 2
     };
 
     const orderSequence = [interaction1, interaction2, interaction1a, interaction3];
@@ -105,5 +115,22 @@ describe("the order sequence", () => {
         expect(el2.compareDocumentPosition(el1) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 
     });
+
+    test("consolidates multiple interactions of the same type", async () => {
+        const user = userEvent.setup()
+        render(<OrderSequence orderNumber={orderNumber} interactions={[duplicate, interaction3]}/>);
+
+        const el3 = await screen.findByText(component3);
+        expect(el3).toBeInTheDocument();
+
+// We should have the payload of the duplicate and the method name of the original
+        await user.hover(screen.getByTestId("request-line"))
+        const el = await screen.findByText(payloadString, {exact: false});
+        expect(el).toBeInTheDocument();
+
+        const el2 = await screen.findByText(interaction3.methodName)
+        expect(el2).toBeInTheDocument();
+    });
+
 
 });

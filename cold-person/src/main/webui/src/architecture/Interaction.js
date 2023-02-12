@@ -115,10 +115,11 @@ const Interaction = ({request, response}) => {
     const requestSvg = "request-svg" + request?.id;
     const responseSvg = "response-svg" + response?.id;
     const componentSvg = "component-svg" + request?.id
-    const isException = request?.payload?.exception != null;
+    const isException = response?.payload?.exception != null;
 
     useEffect(() => {
-        request && eventLine(requestSvg, isException)
+        // Only indicate exceptions on responses
+        request && eventLine(requestSvg, false)
         response && eventLine(responseSvg, isException)
 
         componentBox(componentSvg)
