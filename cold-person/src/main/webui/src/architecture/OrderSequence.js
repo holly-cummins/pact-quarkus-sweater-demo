@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import Interaction from "./Interaction";
+import {useMemo} from "react";
 
 const OrderNumber = styled.div`
   font-weight: bold;
@@ -25,8 +26,7 @@ const stripNulls = (obj) => {
     return Object.entries(obj).reduce((a, [k, v]) => (v ? (a[k] = v, a) : a), {})
 }
 
-const OrderSequence = ({orderNumber, interactions}) => {
-
+const sortInteractions = (interactions) => {
     const interactionsWithCollapsedComponents = interactions.reduce((acc, interaction) => {
         let pair = acc.find(el => el.component === interaction.owningComponent)
         if (!pair) {
@@ -49,7 +49,12 @@ const OrderSequence = ({orderNumber, interactions}) => {
     }, [])
 
     // Sort by request time, not response time
-    const sortedInteractions = interactionsWithCollapsedComponents.sort((a, b) => a.request?.timestamp - b.request?.timestamp)
+    return interactionsWithCollapsedComponents.sort((a, b) => a.request?.timestamp - b.request?.timestamp)
+}
+
+const OrderSequence = ({orderNumber, interactions}) => {
+
+    const sortedInteractions = useMemo(() => sortInteractions(interactions), [interactions.length])
 
     return (
 
