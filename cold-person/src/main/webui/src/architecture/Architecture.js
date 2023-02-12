@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import Interactions from "./Interactions";
+import {SSEProvider} from "react-hooks-sse";
 
 const ArchitectureDisplay = styled.div`
   display: flex;
@@ -15,7 +16,9 @@ const Architecture = () => {
         <ArchitectureDisplay>
             {/*<Components/> Do not draw the components until we have extracted common code for the rough.js style*/}
 
-            <Interactions/>
+            <SSEProvider endpoint="http://localhost:8088/recorder/interactionstream">
+                <Interactions/>
+            </SSEProvider>
         </ArchitectureDisplay>
     )
 };

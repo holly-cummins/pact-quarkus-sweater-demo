@@ -9,6 +9,7 @@
     "jest-canvas-mock": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hooks-sse": "^2.1.0",
     "react-scripts": "5.0.1",
     "react-table-6": "^6.11.0",
     "roughjs": "^4.5.2",

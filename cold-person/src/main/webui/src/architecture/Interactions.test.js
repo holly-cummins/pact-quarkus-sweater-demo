@@ -4,12 +4,14 @@ import {render, screen} from "@testing-library/react";
 import Interactions from "./Interactions";
 import {sources} from 'eventsourcemock';
 import {act} from "react-dom/test-utils";
+import {SSEProvider} from "react-hooks-sse";
 
 const emit = (data) => {
     data.forEach(datum => {
         act(() => {
-            // Calling emit with a constructed message event and 'message' type doesn't seem to work, but calling onmessage directly does
-            sources['http://localhost:8088/recorder/interactionstream'].onmessage({data: JSON.stringify(datum)})
+            sources['http://localhost:8088/recorder/interactionstream'].emit(
+                'message',
+                {data: JSON.stringify(datum)})
         })
     })
 }
@@ -54,7 +56,9 @@ describe("the interaction view", () => {
     });
 
     test("has some interactions", async () => {
-        render(<Interactions/>);
+        render(<SSEProvider endpoint="http://localhost:8088/recorder/interactionstream">
+            <Interactions/>
+        </SSEProvider>);
 
         emit(data)
 
@@ -64,7 +68,9 @@ describe("the interaction view", () => {
     });
 
     test("includes all the interaction names", async () => {
-        render(<Interactions/>);
+        render(<SSEProvider endpoint="http://localhost:8088/recorder/interactionstream">
+            <Interactions/>
+        </SSEProvider>);
         emit(data)
 
         let el = await screen.findByText(/widget1/i);
@@ -81,7 +87,9 @@ describe("the interaction view", () => {
     });
 
     test("filters and reverse-sorts by order number", async () => {
-        render(<Interactions/>);
+        render(<SSEProvider endpoint="http://localhost:8088/recorder/interactionstream">
+            <Interactions/>
+        </SSEProvider>);
         emit(data)
 
         // This checks each element is in the page once
