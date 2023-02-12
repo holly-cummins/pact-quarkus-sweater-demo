@@ -68,7 +68,7 @@
     <dependency>
       <groupId>io.quarkiverse.pact</groupId>
       <artifactId>quarkus-pact-consumer</artifactId>
-      <version>0.2</version>
+      <version>0.2.1</version>
       <scope>provided</scope> <!-- This should be test scope, but see https://github.com/quarkiverse/quarkus-pact/issues/28 -->
     </dependency>
   </dependencies>
