@@ -1,6 +1,6 @@
 #! /bin/sh
 
-podman machine start 2>/dev/null || Podman is already running
+podman machine start 2>/dev/null || echo Podman is already running
 
 rm -rf */target
 
