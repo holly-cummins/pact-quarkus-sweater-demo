@@ -1,11 +1,25 @@
 #! /bin/sh
 
+podman machine start 2>/dev/null || Podman is already running
+
+rm -rf */target
+
 rm -rf ./farmer/src/test/resources/pacts
 rm -rf ./knitter/src/test/java/org/sheepy/knitter/SweaterResourceContractTest.java
 rm -rf ./farmer/src/test/java/org/sheepy/farmer/WoolResourceContractTest.java
 
-rm -rf */target
+# Reset the test code and application to its initial state (no tests for colours,
+# cp initial-state/SweaterResourceTest.java ./knitter/src/test/java/org/sheepy/knitter/
+cp initial-state/SweaterResource.java ./knitter/src/main/java/org/sheepy/knitter/
 
 # This will only work if the server is up, but is useful
 curl -i -X POST http://localhost:8088/recorder/clearall
+
+# Remove quarkus extensions so we can show adding them
+
+cd farmer
+quarkus extension remove quarkus-pact-provider
+cd ..
+cd knitter
+quarkus extension remove quarkus-pact-consumer
 
