@@ -6,14 +6,14 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Architecture Spy CI
+name: Architecture Recorder CI
 
 on:
   push:
     branches: [ "main" ]
     paths:
       - 'architecture-recorder/**'
-      - '.github/workflows/architecture-spy.yml'
+      - '.github/workflows/architecture-recorder.yml'
   pull_request:
     branches: [ "main" ]
     paths:
