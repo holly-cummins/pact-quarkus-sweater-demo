@@ -126,6 +126,11 @@ Change `stringType` to
 The contract tests should still pass.
 (Normally we would build up the tests, but to keep it simple, we will just change the test.)
 2. Now publish the tests, and we have the failure. 
+3. If you do want to add both tests, you can copy the existing pact and test methods, and change the colours in the copy. You will also need to add
+```java
+    @PactTestFor(pactMethod = "buyingAPinkSweater")
+```
+onto the test method. (By default, Pact will only stand up the first `@Pact` for the right provider.)
 
 ## Fallback and error handling
 

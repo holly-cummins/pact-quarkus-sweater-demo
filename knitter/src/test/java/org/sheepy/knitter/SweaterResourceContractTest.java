@@ -26,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusTest
 public class SweaterResourceContractTest {
 
-    @Pact(provider = "farmer", consumer = "knitter")
-    public V4Pact createPact(PactDslWithProvider builder) {
+    @Pact(consumer = "knitter")
+    public V4Pact buyingASweater(PactDslWithProvider builder) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
 
@@ -39,6 +39,33 @@ public class SweaterResourceContractTest {
                 .numberType("orderNumber");
 
         String woolBody = "{\"colour\":\"white\"}\n";
+
+        return builder
+                .uponReceiving("post request")
+                .path("/wool/order")
+                .headers(headers)
+                .method(HttpMethod.POST)
+                .body(woolOrderBody)
+                .willRespondWith()
+                .status(200)
+                .headers(headers)
+                .body(woolBody)
+                .toPact(V4Pact.class);
+    }
+
+    @Pact(consumer = "knitter")
+    public V4Pact buyingAPinkSweater(PactDslWithProvider builder) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+
+        // Here we define our mock, which is also our expectations for the provider
+
+        // This defines what the body of the request could look like; we are generic and say it can be anything that meets the schema
+        DslPart woolOrderBody = new PactDslJsonBody()
+                .stringValue("colour", "pink")
+                .numberType("orderNumber");
+
+        String woolBody = "{\"colour\":\"pink\"}\n";
 
         return builder
                 .uponReceiving("post request")
@@ -68,5 +95,20 @@ public class SweaterResourceContractTest {
         assertEquals("white", sweater.getColour());
     }
 
+    @Test
+    @PactTestFor(pactMethod = "buyingAPinkSweater")
+    public void testSweaterEndpointForPinkSweater() {
+        SweaterOrder order = new SweaterOrder("pink", 16);
+        Sweater sweater = given()
+                .contentType(ContentType.JSON)
+                .body(order)
+                .when()
+                .post("/sweater/order")
+                .then()
+                .statusCode(200)
+                .extract().as(Sweater.class);
+
+        assertEquals("pink", sweater.getColour());
+    }
 
 }
