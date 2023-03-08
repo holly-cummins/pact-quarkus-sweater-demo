@@ -67,7 +67,7 @@ It may be useful to clear all architecture information, or just the historical i
 4. Add the tests
    1. If you're in a hurry, use the git history to recreate the contract tests. Rollback any pom changes and `SweaterResourceContractTest` from the git history.
    2. Otherwise, copy the `SweaterResourceTest` and use it as the starting point. The test method stays exactly the same, because we're trying to validate the behaviour of *our* knitter code.
-   3. The mocking logic is a bit different. Delete the mock injection and the `BeforeEach` *tab-pact* for the following live template:
+   3. The mocking logic is a bit different. Delete the mock injection and the `BeforeEach` *pact-tab* for the following live template:
    ```java
          @Pact(provider = "farmer", consumer = "knitter")
    public V4Pact createPact(PactDslWithProvider builder) {
@@ -96,7 +96,7 @@ It may be useful to clear all architecture information, or just the historical i
                 .toPact(V4Pact.class);
    }
    ```
-5. Finally, we need to add some extra annotations. *tab-extend* on the class declaration to add
+5. Finally, we need to add some extra annotations. *extend-tab* on the class declaration to add
 
   ```java
    @ExtendWith(PactConsumerTestExt.class)
