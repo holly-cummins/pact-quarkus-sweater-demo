@@ -28,10 +28,16 @@ Open a terminal within each IDE (or two OS terminals).
 
 ### Services setup 
 
-```shell
-cd architecture-recorder
-quarkus dev
-```
+1. If this is the first time you are running this, build/install the [observer extension](observer-extension):
+    ```shell
+    cd observer-extension
+    ./mvnw install
+    ```
+2. Start the [architecture recorder](architecture-recorder):
+    ```shell
+    cd architecture-recorder
+    quarkus dev
+    ```
 
 It may be useful to clear all architecture information, or just the historical interactions. 
 
