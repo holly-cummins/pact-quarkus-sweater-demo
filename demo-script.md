@@ -75,31 +75,33 @@ It may be useful to clear all architecture information, or just the historical i
    2. Otherwise, copy the `SweaterResourceTest` and use it as the starting point. The test method stays exactly the same, because we're trying to validate the behaviour of *our* knitter code.
    3. The mocking logic is a bit different. Delete the mock injection and the `BeforeEach` *pact-tab* for the following live template:
    ```java
-         @Pact(provider = "farmer", consumer = "knitter")
+   @Pact(provider = "farmer", consumer = "knitter")
    public V4Pact createPact(PactDslWithProvider builder) {
-   Map<String, String> headers = new HashMap<>();
-   headers.put("Content-Type", "application/json");
+       var headers = Map.of(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
 
         // Here we define our mock, which is also our expectations for the provider
 
         // This defines what the body of the request could look like; we are generic and say it can be anything that meets the schema
-        DslPart woolOrderBody = new PactDslJsonBody()
+        var woolOrderBody = LambdaDsl.newJsonBody(body ->
+              body
                 .stringType("colour")
-                .numberType("orderNumber");
+                .numberType("orderNumber")
+        ).build();
+        
 
-        String woolBody = "{\"colour\":\"white\"}\n";
+        var woolBody = LambdaDsl.newJsonBody(body -> body.stringValue("colour", "white")).build();
 
         return builder
-                .uponReceiving("post request")
-                .path("/wool/order")
-                .headers(headers)
-                .method(HttpMethod.POST)
-                .body(woolOrderBody)
-                .willRespondWith()
-                .status(200)
-                .headers(headers)
-                .body(woolBody)
-                .toPact(V4Pact.class);
+          .uponReceiving("post request")
+            .path("/wool/order")
+            .headers(headers)
+            .method(HttpMethod.POST)
+            .body(woolOrderBody)
+          .willRespondWith()
+            .status(Status.OK.getStatusCode())
+            .headers(headers)
+            .body(woolBody)
+          .toPact(V4Pact.class);
    }
    ```
 5. Finally, we need to add some extra annotations. *extend-tab* on the class declaration to add
@@ -107,20 +109,18 @@ It may be useful to clear all architecture information, or just the historical i
   ```java
    @ExtendWith(PactConsumerTestExt.class)
    @PactTestFor(providerName = "farmer", port = "8096")
-   @PactDirectory("target/pacts")
-   
 ```
 
 6. Show the `SweaterResourceTest` and then compare the two tests. Explain the differences are because Pact acts both as a mock and a validator of all possible values.
 7. Restart the tests. A json contract has appeared in `knitter/target/pacts`
 8. The test should pass, we're the consumer, we made assumptions about how the provider should behave. But are those assumptions correct? Now is when we find out! 
-9. Copy the pact from the knitter to share it to the farmer: `publish-contracts.shb`. Normally this would be done by automatically checking it into source control or by using a pact broker. 
-10. 
+9. Copy the pact from the knitter to share it to the farmer: `publish-contracts.shb`. Normally this would be done by automatically checking it into source control or by using a pact broker.
 
-### Provider 
+### Provider (farmer)
 
-9. Restore the Java test from history. 
-10. Run the Java tests, show the failure, explain how it could be fixed by negotiating a contract change or changing the source code. 
+1. Restore the Java test from history. 
+2. Add the pact provider dependency by running `quarkus extension add quarkus-pact-provider` (or by restoring `farmer/pom.xml` from history).
+3. Run the Java tests, show the failure, explain how it could be fixed by negotiating a contract change or changing the source code. 
 
 ## Sweater colour 
 
@@ -129,7 +129,7 @@ Change `stringType` to
 ```java
                 .stringValue("colour", "pink")
 ```
-The contract tests should still pass.
+The provider contract tests in `farmer` should still pass, but now the consumer tests in `knitter` are failing.
 (Normally we would build up the tests, but to keep it simple, we will just change the test.)
 2. Now publish the tests, and we have the failure. 
 3. If you do want to add both tests, you can copy the existing pact and test methods, and change the colours in the copy. You will also need to add
