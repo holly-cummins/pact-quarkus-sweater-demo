@@ -1,86 +1,91 @@
 package org.sheepy.knitter;
 
-import au.com.dius.pact.consumer.dsl.DslPart;
-import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Map;
+
+import javax.ws.rs.HttpMethod;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import io.quarkus.test.junit.QuarkusTest;
+
+import au.com.dius.pact.consumer.dsl.LambdaDsl;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.V4Pact;
 import au.com.dius.pact.core.model.annotations.Pact;
-import au.com.dius.pact.core.model.annotations.PactDirectory;
-import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import javax.ws.rs.HttpMethod;
-import java.util.HashMap;
-import java.util.Map;
-
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(PactConsumerTestExt.class)
 @PactTestFor(providerName = "farmer", port = "8096")
-@PactDirectory("target/pacts")
 @QuarkusTest
 public class SweaterResourceContractTest {
 
     @Pact(consumer = "knitter")
     public V4Pact buyingASweater(PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+        var headers = Map.of(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
 
         // Here we define our mock, which is also our expectations for the provider
 
         // This defines what the body of the request could look like; we are generic and say it can be anything that meets the schema
-        DslPart woolOrderBody = new PactDslJsonBody()
-                .stringType("colour")
-                .numberType("orderNumber");
+        var woolOrderBody = LambdaDsl.newJsonBody(body ->
+          body
+            .stringType("colour")
+            .numberType("orderNumber")
+        ).build();
 
-        String woolBody = "{\"colour\":\"white\"}\n";
+        var woolBody = LambdaDsl.newJsonBody(body -> body.stringValue("colour", "white")).build();
 
         return builder
                 .uponReceiving("post request")
-                .path("/wool/order")
-                .headers(headers)
-                .method(HttpMethod.POST)
-                .body(woolOrderBody)
+                    .path("/wool/order")
+                    .headers(headers)
+                    .method(HttpMethod.POST)
+                    .body(woolOrderBody)
                 .willRespondWith()
-                .status(200)
-                .headers(headers)
-                .body(woolBody)
+                    .status(Status.OK.getStatusCode())
+                    .headers(headers)
+                    .body(woolBody)
                 .toPact(V4Pact.class);
     }
 
     @Pact(consumer = "knitter")
     public V4Pact buyingAPinkSweater(PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+        var headers = Map.of(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
 
         // Here we define our mock, which is also our expectations for the provider
 
         // This defines what the body of the request could look like; we are generic and say it can be anything that meets the schema
-        DslPart woolOrderBody = new PactDslJsonBody()
-                .stringValue("colour", "pink")
-                .numberType("orderNumber");
+        var woolOrderBody = LambdaDsl.newJsonBody(body ->
+          body
+            .stringValue("colour", "pink")
+            .numberType("orderNumber")
+        ).build();
 
-        String woolBody = "{\"colour\":\"pink\"}\n";
+        var woolBody = LambdaDsl.newJsonBody(body -> body.stringValue("colour", "pink")).build();
 
         return builder
-                .uponReceiving("post request")
-                .path("/wool/order")
-                .headers(headers)
-                .method(HttpMethod.POST)
-                .body(woolOrderBody)
+                .uponReceiving("post request for pink sweater")
+                    .path("/wool/order")
+                    .headers(headers)
+                    .method(HttpMethod.POST)
+                    .body(woolOrderBody)
                 .willRespondWith()
-                .status(200)
-                .headers(headers)
-                .body(woolBody)
+                    .status(200)
+                    .headers(headers)
+                    .body(woolBody)
                 .toPact(V4Pact.class);
     }
 
     @Test
+    @PactTestFor(pactMethod = "buyingASweater")
     public void testSweaterEndpointForWhiteSweater() {
         SweaterOrder order = new SweaterOrder("white", 12);
         Sweater sweater = given()
