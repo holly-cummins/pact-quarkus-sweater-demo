@@ -1,14 +1,14 @@
 package org.sheepy.observer.runtime;
 
-import org.sheepy.observer.runtime.config.QuarkusProfile;
-
-import javax.enterprise.inject.Default;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-
 import static org.sheepy.observer.runtime.LogHandler.LOG_PREFIX;
+
+import jakarta.enterprise.inject.Default;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.MediaType;
+
+import org.sheepy.observer.runtime.config.QuarkusProfile;
 
 @Default
 public class RecorderService {

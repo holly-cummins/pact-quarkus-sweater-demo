@@ -1,5 +1,26 @@
 package org.sheepy.observer.deployment;
 
+import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
+
+import java.util.Collection;
+import java.util.List;
+
+import jakarta.ws.rs.Priorities;
+
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.AnnotationValue;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.Type;
+import org.sheepy.observer.runtime.ClientFilter;
+import org.sheepy.observer.runtime.ComponentRecorder;
+import org.sheepy.observer.runtime.CorrelationId;
+import org.sheepy.observer.runtime.Filter;
+import org.sheepy.observer.runtime.InteractionInterceptor;
+import org.sheepy.observer.runtime.LogHandlerMaker;
+import org.sheepy.observer.runtime.ObserverLog;
+import org.sheepy.observer.runtime.RecorderService;
+import org.sheepy.observer.runtime.RestExceptionMapper;
+
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.AnnotationsTransformerBuildItem;
 import io.quarkus.arc.deployment.BeanContainerBuildItem;
@@ -17,31 +38,12 @@ import io.quarkus.rest.client.reactive.deployment.DotNames;
 import io.quarkus.rest.client.reactive.deployment.RegisterProviderAnnotationInstanceBuildItem;
 import io.quarkus.resteasy.reactive.spi.ContainerResponseFilterBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.AnnotationValue;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.Type;
-import org.sheepy.observer.runtime.ClientFilter;
-import org.sheepy.observer.runtime.ComponentRecorder;
-import org.sheepy.observer.runtime.CorrelationId;
-import org.sheepy.observer.runtime.Filter;
-import org.sheepy.observer.runtime.InteractionInterceptor;
-import org.sheepy.observer.runtime.LogHandlerMaker;
-import org.sheepy.observer.runtime.ObserverLog;
-import org.sheepy.observer.runtime.RecorderService;
-import org.sheepy.observer.runtime.RestExceptionMapper;
-
-import javax.ws.rs.Priorities;
-import java.util.Collection;
-import java.util.List;
-
-import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 
 class ObserverProcessor {
 
     private static final String FEATURE = "observer-extension";
-    private static final DotName JAX_RS_GET = DotName.createSimple("javax.ws.rs.GET");
-    private static final DotName JAX_RS_POST = DotName.createSimple("javax.ws.rs.POST");
+    private static final DotName JAX_RS_GET = DotName.createSimple("jakarta.ws.rs.GET");
+    private static final DotName JAX_RS_POST = DotName.createSimple("jakarta.ws.rs.POST");
     private static final DotName CLIENT_FILTER = DotName.createSimple(ClientFilter.class.getName());
     private static final DotName REGISTER_REST_CLIENT = DotName.createSimple("org.eclipse.microprofile.rest.client.inject.RegisterRestClient");
 

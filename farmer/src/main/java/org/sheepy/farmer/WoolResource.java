@@ -1,7 +1,7 @@
 package org.sheepy.farmer;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 @Path("/wool")
 public class WoolResource {

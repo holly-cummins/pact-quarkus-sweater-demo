@@ -1,6 +1,6 @@
 package org.sheepy.observer.runtime;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class CorrelationId {

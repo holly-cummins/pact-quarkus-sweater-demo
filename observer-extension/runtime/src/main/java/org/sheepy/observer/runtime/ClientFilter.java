@@ -1,8 +1,8 @@
 package org.sheepy.observer.runtime;
 
-import javax.inject.Inject;
-import javax.ws.rs.client.ClientRequestContext;
-import javax.ws.rs.client.ClientRequestFilter;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.client.ClientRequestFilter;
 
 public class ClientFilter implements ClientRequestFilter {
     @Inject
