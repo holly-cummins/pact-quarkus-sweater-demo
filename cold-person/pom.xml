@@ -8,13 +8,14 @@
   <properties>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <failsafe.useModulePath>false</failsafe.useModulePath>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>2.16.4.Final</quarkus.platform.version>
-    <surefire-plugin.version>3.0.0-M9</surefire-plugin.version>
+	  <quinoa.version>1.2.5</quinoa.version>
+    <surefire-plugin.version>3.0.0</surefire-plugin.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -39,7 +40,7 @@
     <dependency>
       <groupId>io.quarkiverse.quinoa</groupId>
       <artifactId>quarkus-quinoa</artifactId>
-      <version>1.2.5</version>
+      <version>${quinoa.version}</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -68,7 +69,7 @@
     <dependency>
       <groupId>io.quarkiverse.quinoa</groupId>
       <artifactId>quarkus-quinoa-testing</artifactId>
-      <version>1.2.5</version>
+      <version>${quinoa.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

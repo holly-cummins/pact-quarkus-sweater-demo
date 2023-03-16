@@ -1,12 +1,14 @@
 package org.sheepy.observer;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import io.quarkus.test.junit.QuarkusTest;
+
+import io.restassured.http.ContentType;
 
 @QuarkusTest
 public class RecorderResourceTest {
@@ -32,11 +34,7 @@ public class RecorderResourceTest {
                 .post("/recorder/component")
                 .then()
                 .statusCode(200);
-        Component[] components = given()
-                .contentType(ContentType.JSON)
-                .body(component)
-                .when()
-                .get("/recorder/components")
+        Component[] components = get("/recorder/components")
                 .then()
                 .statusCode(200)
                 .extract().as(Component[].class);
@@ -60,11 +58,7 @@ public class RecorderResourceTest {
                 .post("/recorder/interaction")
                 .then()
                 .statusCode(204);
-        Interaction[] interactions = given()
-                .contentType(ContentType.JSON)
-                .body(interaction)
-                .when()
-                .get("/recorder/interactions")
+        Interaction[] interactions = get("/recorder/interactions")
                 .then()
                 .statusCode(200)
                 .extract().as(Interaction[].class);
@@ -86,11 +80,7 @@ public class RecorderResourceTest {
                 .post("/recorder/log")
                 .then()
                 .statusCode(204);
-        Log[] logs = given()
-                .contentType(ContentType.JSON)
-                .body(log)
-                .when()
-                .get("/recorder/logs")
+        Log[] logs = get("/recorder/logs")
                 .then()
                 .statusCode(200)
                 .extract().as(Log[].class);

@@ -1,16 +1,20 @@
 package org.sheepy.observer;
 
-import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntityBase;
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
-import org.jboss.resteasy.reactive.RestStreamElementType;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.bson.types.ObjectId;
+import org.jboss.resteasy.reactive.RestStreamElementType;
+
+import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntityBase;
+
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
 
 /**
  * Create self-diagramming architectures.
@@ -22,10 +26,10 @@ public class RecorderResource {
 
     @Path("/component")
     @POST
-    public long addComponent(Component component) {
-        component.persistOrUpdate().subscribe().with(c -> System.out.println("\uD83C\uDFA5 [recorder] registered component " + ((Component) c).getName()));
-        // This really should be the id we just created, but that's too much reactive programming for one day
-        return 0;
+    public Uni<ObjectId> addComponent(Component component) {
+			return component.<Component>persistOrUpdate()
+				.invoke(c -> System.out.println("\uD83C\uDFA5 [recorder] registered component " + c.getName()))
+				.map(c -> c.id);
     }
 
     @Path("/componentstream")
@@ -46,9 +50,12 @@ public class RecorderResource {
 
     @Path("/interaction")
     @POST
-    public void addInteraction(Interaction interaction) {
+    public Uni<Void> addInteraction(Interaction interaction) {
         interaction.setTimestamp(System.currentTimeMillis());
-        interaction.persistOrUpdate().subscribe().with(i -> System.out.println("\uD83C\uDFA5 [recorder] registering interaction " + ((Interaction) i).getOwningComponent() + ":" + ((Interaction) i).getMethodName()));
+
+				return interaction.<Interaction>persistOrUpdate()
+	        .invoke(i -> System.out.println("\uD83C\uDFA5 [recorder] registering interaction " + i.getOwningComponent() + ":" + i.getMethodName()))
+					.replaceWithVoid();
     }
 
     @Path("/interactionstream")
