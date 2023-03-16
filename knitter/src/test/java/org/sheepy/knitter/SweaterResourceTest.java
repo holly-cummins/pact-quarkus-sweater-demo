@@ -23,12 +23,12 @@ public class SweaterResourceTest {
 
     @BeforeEach
     public void setUp() {
-        when(mock.getWool(any())).thenReturn(new Skein("white"));
+        when(mock.getWool(any())).thenReturn(new Skein("brown"));
     }
 
     @Test
     public void testSweaterEndpointForWhiteSweater() {
-        SweaterOrder order = new SweaterOrder("white", 12);
+        SweaterOrder order = new SweaterOrder("brown", 12);
         Sweater sweater = given()
                 .contentType(ContentType.JSON)
                 .body(order)
@@ -38,7 +38,7 @@ public class SweaterResourceTest {
                 .statusCode(200)
                 .extract().as(Sweater.class);
 
-        assertEquals("white", sweater.getColour());
+        assertEquals("brown", sweater.colour());
     }
 
 

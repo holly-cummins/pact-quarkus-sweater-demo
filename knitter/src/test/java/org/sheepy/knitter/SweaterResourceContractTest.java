@@ -1,5 +1,6 @@
 package org.sheepy.knitter;
 
+import static au.com.dius.pact.consumer.dsl.LambdaDsl.newJsonBody;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.quarkus.test.junit.QuarkusTest;
 
-import au.com.dius.pact.consumer.dsl.LambdaDsl;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
@@ -35,13 +35,13 @@ public class SweaterResourceContractTest {
         // Here we define our mock, which is also our expectations for the provider
 
         // This defines what the body of the request could look like; we are generic and say it can be anything that meets the schema
-        var woolOrderBody = LambdaDsl.newJsonBody(body ->
+        var woolOrderBody = newJsonBody(body ->
           body
             .stringType("colour")
             .numberType("orderNumber")
         ).build();
 
-        var woolBody = LambdaDsl.newJsonBody(body -> body.stringValue("colour", "white")).build();
+        var woolBody = newJsonBody(body -> body.stringValue("colour", "brown")).build();
 
         return builder
                 .uponReceiving("post request")
@@ -63,13 +63,13 @@ public class SweaterResourceContractTest {
         // Here we define our mock, which is also our expectations for the provider
 
         // This defines what the body of the request could look like; we are generic and say it can be anything that meets the schema
-        var woolOrderBody = LambdaDsl.newJsonBody(body ->
+        var woolOrderBody = newJsonBody(body ->
           body
             .stringValue("colour", "pink")
             .numberType("orderNumber")
         ).build();
 
-        var woolBody = LambdaDsl.newJsonBody(body -> body.stringValue("colour", "pink")).build();
+        var woolBody = newJsonBody(body -> body.stringValue("colour", "pink")).build();
 
         return builder
                 .uponReceiving("post request for pink sweater")
@@ -86,8 +86,8 @@ public class SweaterResourceContractTest {
 
     @Test
     @PactTestFor(pactMethod = "buyingASweater")
-    public void testSweaterEndpointForWhiteSweater() {
-        SweaterOrder order = new SweaterOrder("white", 12);
+    public void testSweaterEndpointForBrownSweater() {
+        SweaterOrder order = new SweaterOrder("brown", 12);
         Sweater sweater = given()
                 .contentType(ContentType.JSON)
                 .body(order)
@@ -97,7 +97,7 @@ public class SweaterResourceContractTest {
                 .statusCode(200)
                 .extract().as(Sweater.class);
 
-        assertEquals("white", sweater.getColour());
+        assertEquals("brown", sweater.colour());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class SweaterResourceContractTest {
                 .statusCode(200)
                 .extract().as(Sweater.class);
 
-        assertEquals("pink", sweater.getColour());
+        assertEquals("pink", sweater.colour());
     }
 
 }

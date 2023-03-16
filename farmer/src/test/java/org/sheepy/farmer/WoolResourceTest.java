@@ -1,11 +1,13 @@
 package org.sheepy.farmer;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
+
+import io.restassured.http.ContentType;
 
 @QuarkusTest
 public class WoolResourceTest {
@@ -24,7 +26,7 @@ public class WoolResourceTest {
                 .statusCode(200)
                 .extract().as(Skein.class);
 
-        assertEquals(skein.getColour(), colour);
+        assertEquals(skein.colour(), colour);
     }
 
     @Test
@@ -40,7 +42,7 @@ public class WoolResourceTest {
                 .statusCode(200)
                 .extract().as(Skein.class);
 
-        assertEquals(skein.getColour(), colour);
+        assertEquals(skein.colour(), colour);
     }
 
 }

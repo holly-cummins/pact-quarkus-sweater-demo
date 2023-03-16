@@ -1,27 +1,5 @@
 package org.sheepy.coldperson;
 
-public class SweaterOrder {
-    private String colour;
-    private int orderNumber;
+public record SweaterOrder(String colour, int orderNumber) {
 
-    public SweaterOrder(String colour, int orderNumber) {
-        this.colour = colour;
-        this.orderNumber = orderNumber;
-    }
-
-    public String getColour() {
-        return colour;
-    }
-
-    public void setColour(String colour) {
-        this.colour = colour;
-    }
-
-    public int getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
-    }
 }

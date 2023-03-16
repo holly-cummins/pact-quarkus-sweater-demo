@@ -1,11 +1,13 @@
 package org.sheepy.coldperson;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
+
+import io.restassured.http.ContentType;
 
 @QuarkusTest
 public class SweaterResourceTest {
@@ -22,7 +24,7 @@ public class SweaterResourceTest {
                 .statusCode(200)
                 .extract().as(Sweater.class);
 
-        assertEquals(67, sweater.getOrderNumber());
+        assertEquals(67, sweater.orderNumber());
     }
 
     @Test
@@ -37,7 +39,7 @@ public class SweaterResourceTest {
                 .statusCode(200)
                 .extract().as(Sweater.class);
 
-        assertEquals("white", sweater.getColour());
+        assertEquals("white", sweater.colour());
     }
 
 

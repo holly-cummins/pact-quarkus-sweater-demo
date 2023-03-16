@@ -1,8 +1,8 @@
 package org.sheepy.knitter;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class SweaterTest {
 
@@ -11,7 +11,7 @@ public class SweaterTest {
         String colour = "mauve";
         Skein skein = new Skein(colour);
         Sweater sweater = new Sweater(skein, 10);
-        assertEquals(colour, sweater.getColour());
+        assertEquals(colour, sweater.colour());
     }
 
 }

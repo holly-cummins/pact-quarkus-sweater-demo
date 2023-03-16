@@ -1,46 +1,13 @@
 package org.sheepy.farmer;
 
-public class Skein {
-    private String colour;
-    private Weight weight;
-    private int orderNumber;
-
-    public Skein() {
-    }
+public record Skein(String colour, int orderNumber, Weight weight) {
 
     /**
-     * Given a sheep, get usable wool from the sheep.
+     * Given a wookieColor, get usable wool from the wookieColor.
      *
-     * @param sheep the sheep whose wool will be spun into a skein of yarn
+     * @param wookieColor the wookieColor whose wool will be spun into a skein of yarn
      */
-    public Skein(Sheep sheep, int orderNumber) {
-        this.colour = sheep.name();
-        this.orderNumber = orderNumber;
-        this.weight = Weight.Worsted;
-    }
-
-    public String getColour() {
-        return colour;
-    }
-
-    public void setColour(String colour) {
-        this.colour = colour;
-    }
-
-
-    public Weight getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Weight weight) {
-        this.weight = weight;
-    }
-
-    public int getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
+    public Skein(WookieColor wookieColor, int orderNumber) {
+			this(wookieColor.name().toLowerCase(), orderNumber, Weight.Worsted);
     }
 }

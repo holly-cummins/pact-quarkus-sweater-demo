@@ -9,13 +9,13 @@ public class WoolResource {
     @Path("/order")
     @POST
     public Skein shearSheep(Order order) {
-        Sheep sheep;
+        WookieColor wookieColor;
         try {
-            sheep = Sheep.valueOf(order.getColour().toLowerCase());
+            wookieColor = WookieColor.valueOf(order.colour().toUpperCase());
         } catch (IllegalArgumentException e) {
-            sheep = Sheep.white;
+            wookieColor = WookieColor.BROWN;
         }
-        Skein skein = new Skein(sheep, order.getOrderNumber());
-        return skein;
+
+        return new Skein(wookieColor, order.orderNumber());
     }
 }

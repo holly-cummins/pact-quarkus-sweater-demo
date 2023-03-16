@@ -60,7 +60,7 @@
       "response": {
         "body": {
           "content": {
-            "colour": "white"
+            "colour": "brown"
           },
           "contentType": "application/json",
           "encoded": false

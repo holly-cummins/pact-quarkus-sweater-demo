@@ -1,9 +1,10 @@
 package org.sheepy.coldperson;
 
-import io.quarkus.test.Mock;
+import javax.enterprise.context.ApplicationScoped;
+
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import javax.enterprise.context.ApplicationScoped;
+import io.quarkus.test.Mock;
 
 @Mock
 @RestClient
@@ -12,10 +13,7 @@ public class MockKnitterService implements KnitterService {
 
     @Override
     public Sweater getSweater(SweaterOrder order) {
-        Sweater sweater = new Sweater();
-        sweater.setColour(order.getColour());
-        sweater.setOrderNumber(order.getOrderNumber());
-        return sweater;
+			return new Sweater(order.colour(), order.orderNumber());
     }
 }
 
