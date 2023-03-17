@@ -3,11 +3,11 @@ package org.sheepy.farmer;
 public record Skein(String colour, int orderNumber, Weight weight) {
 
     /**
-     * Given a wookieColor, get usable wool from the wookieColor.
+     * Given a sheep, get usable wool from the sheep.
      *
-     * @param wookieColor the wookieColor whose wool will be spun into a skein of yarn
+     * @param sheep the sheep whose wool will be spun into a skein of yarn
      */
-    public Skein(WookieColor wookieColor, int orderNumber) {
-			this(wookieColor.name().toLowerCase(), orderNumber, Weight.Worsted);
+    public Skein(Sheep sheep, int orderNumber) {
+			this(sheep.name().toLowerCase(), orderNumber, Weight.Worsted);
     }
 }
