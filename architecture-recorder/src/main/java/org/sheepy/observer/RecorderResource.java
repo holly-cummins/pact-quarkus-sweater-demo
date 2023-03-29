@@ -6,10 +6,10 @@ import java.util.List;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import org.bson.types.ObjectId;
-import org.jboss.resteasy.reactive.RestStreamElementType;
 
 import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntityBase;
 
@@ -33,7 +33,7 @@ public class RecorderResource {
     }
 
     @Path("/componentstream")
-    @RestStreamElementType(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.SERVER_SENT_EVENTS)
     @GET
     public Multi<Component> streamComponents() {
         return Component.streamAll();
@@ -43,7 +43,6 @@ public class RecorderResource {
     @Path("/components")
     @GET
     public Uni<List<ReactivePanacheMongoEntityBase>> getComponents() {
-
         return Component.listAll();
     }
 
@@ -59,9 +58,9 @@ public class RecorderResource {
     }
 
     @Path("/interactionstream")
-    @RestStreamElementType(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.SERVER_SENT_EVENTS)
     @GET
-    public Multi<Component> streamInteractions() {
+    public Multi<Interaction> streamInteractions() {
         return Interaction.streamAll();
     }
 

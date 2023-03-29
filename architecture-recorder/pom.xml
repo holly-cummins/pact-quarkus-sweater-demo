@@ -6,6 +6,7 @@
   <artifactId>architecture-recorder</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
+		<assertj.version>3.24.2</assertj.version>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <failsafe.useModulePath>false</failsafe.useModulePath>
     <maven.compiler.release>17</maven.compiler.release>
@@ -52,6 +53,12 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
