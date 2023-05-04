@@ -1,18 +1,16 @@
 package org.sheepy.knitter;
 
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
+import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.mockito.InjectMock;
+import io.restassured.http.ContentType;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
-
-import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 public class SweaterResourceTest {
@@ -28,7 +26,8 @@ public class SweaterResourceTest {
 
     @Test
     public void testSweaterEndpointForWhiteSweater() {
-        SweaterOrder order = new SweaterOrder("brown", 12);
+        SweaterOrder order = new SweaterOrder("white",
+                12);
         Sweater sweater = given()
                 .contentType(ContentType.JSON)
                 .body(order)
@@ -36,9 +35,11 @@ public class SweaterResourceTest {
                 .post("/sweater/order")
                 .then()
                 .statusCode(200)
-                .extract().as(Sweater.class);
+                .extract()
+                .as(Sweater.class);
 
-        assertEquals("brown", sweater.colour());
+        assertEquals("white",
+                sweater.colour());
     }
 
 
