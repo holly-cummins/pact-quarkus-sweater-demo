@@ -1,10 +1,9 @@
 package org.sheepy.knitter;
 
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Path("/sweater")
 public class SweaterResource {
@@ -15,9 +14,11 @@ public class SweaterResource {
     @Path("/order")
     @POST
     public Sweater knitSweater(SweaterOrder order) {
-        WoolOrder woolOrder = new WoolOrder(order.getColour(), order.getOrderNumber());
+        WoolOrder woolOrder = new WoolOrder(order.colour(),
+                order.orderNumber());
         Skein skein = farmer.getWool(woolOrder);
-        Sweater sweater = new Sweater(skein, order.getOrderNumber());
+        Sweater sweater = new Sweater(skein,
+                order.orderNumber());
         return sweater;
     }
 }
