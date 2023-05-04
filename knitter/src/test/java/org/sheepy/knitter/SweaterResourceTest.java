@@ -21,7 +21,7 @@ public class SweaterResourceTest {
 
     @BeforeEach
     public void setUp() {
-        when(mock.getWool(any())).thenReturn(new Skein("brown"));
+        when(mock.getWool(any())).thenReturn(new Skein("white"));
     }
 
     @Test
