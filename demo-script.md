@@ -73,7 +73,7 @@ It may be useful to clear all architecture information, or just the historical i
 4. Add the tests
    1. If you're in a hurry, use the git history to recreate the contract tests. Rollback any pom changes and `SweaterResourceContractTest` from the git history.
    2. Otherwise, copy the `SweaterResourceTest` and use it as the starting point. The test method stays exactly the same, because we're trying to validate the behaviour of *our* knitter code.
-   3. The mocking logic is a bit different. Delete the mock injection and the `BeforeEach` *pact-tab* for the following live template:
+   3. The mocking logic is a bit different. Delete both the mock injection and the `BeforeEach` *pact-enter* for the following live template:
    ```java
    @Pact(provider = "farmer", consumer = "knitter")
    public V4Pact createPact(PactDslWithProvider builder) {
@@ -104,7 +104,7 @@ It may be useful to clear all architecture information, or just the historical i
           .toPact(V4Pact.class);
    }
    ```
-5. Finally, we need to add some extra annotations. *extend-tab* on the class declaration to add
+5. Finally, we need to add some extra annotations. *extend-enter* on the class declaration to add
 
   ```java
    @ExtendWith(PactConsumerTestExt.class)
@@ -118,9 +118,11 @@ It may be useful to clear all architecture information, or just the historical i
 
 ### Provider (farmer)
 
-1. Restore the Java test from history. 
-2. Add the pact provider dependency by running `quarkus extension add quarkus-pact-provider` (or by restoring `farmer/pom.xml` from history).
-3. Run the Java tests, show the failure, explain how it could be fixed by negotiating a contract change or changing the source code. 
+3. Add the pact provider dependency by running `quarkus extension add quarkus-pact-provider` (or by restoring `farmer/pom.xml` from history).
+4. Open `WoolResource`
+5. Type shift-cmd-T and create a new test. Name it `WoolResourceContractTest`.
+6. Type template-enter to insert the live template.
+7. Run the Java tests, show the failure, explain how it could be fixed by negotiating a contract change or changing the source code. 
 
 ## Sweater colour 
 
@@ -142,7 +144,7 @@ onto the test method. (By default, Pact will only stand up the first `@Pact` for
 
 1. So we have a failing test, but what's the right fix? Fallback to white isn't right, there should be some kind of error. 
 2. We think we should have a `418`, not a white sweater. `418` is `I'm a teapot`, maybe not the right code, but it's my code so I can return what I want. Also, it keeps behaviour of the different services distinct. 
-3. Look at the exception mapper to turn `NotFoundException`s into 418s. 
+3. Show at the exception mapper to turn `NotFoundException`s into 418s. 
 4. Update the tests to expect a `418`. 
 ```java
     @Test
