@@ -69,7 +69,7 @@ It may be useful to clear all architecture information, or just the historical i
 ### Consumer
 1. How can we fix this? The app is broken, but the tests are all green. This is where contract tests give that extra validation to allow us to confirm assumptions. 
 2. Pact is consumer-driven contract testing, so we start with the consumer. It's a bit like a TDD principle, start with the expectations. Open the `knitter` project.
-3. In a terminal, run `quarkus extension add quarkus-pact-consumer`
+3. In a terminal, run `quarkus extension add pact-consumer`
 4. Add the tests
    1. If you're in a hurry, use the git history to recreate the contract tests. Rollback any pom changes and `SweaterResourceContractTest` from the git history.
    2. Otherwise, copy the `SweaterResourceTest` and use it as the starting point. The test method stays exactly the same, because we're trying to validate the behaviour of *our* knitter code.
@@ -118,7 +118,7 @@ It may be useful to clear all architecture information, or just the historical i
 
 ### Provider (farmer)
 
-3. Add the pact provider dependency by running `quarkus extension add quarkus-pact-provider` (or by restoring `farmer/pom.xml` from history).
+3. Add the pact provider dependency by running `quarkus extension add pact-provider` (or by restoring `farmer/pom.xml` from history).
 4. Open `WoolResource`
 5. Type shift-cmd-T and create a new test. Name it `WoolResourceContractTest`.
 6. Type template-enter to insert the live template.
@@ -126,7 +126,8 @@ It may be useful to clear all architecture information, or just the historical i
 
 ## Sweater colour 
 
-1. We were too vague in our contract. We actually said in the contract any colour would give a white sweater. 
+1. What happens if we order other sweater colours? In the UI, order a white sweater, a grey sweater, a brown sweater, a black sweater ... all should work fine. Then try a pink sweater - it will come back as white! This is a business process flaw we've identified. We don't have any dyer in the flow, so the farmer is restricted to colours of sheep.
+2. We were too vague in our contract. We actually said in the contract any colour would give a white sweater. 
 Change `stringType` to 
 ```java
                 .stringValue("colour", "pink")
