@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Map;
 
+import au.com.dius.pact.consumer.junit.MockServerConfig;
+import au.com.dius.pact.core.model.PactSpecVersion;
+import io.quarkus.test.common.QuarkusTestResource;
 import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -13,6 +16,9 @@ import jakarta.ws.rs.core.Response.Status;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.sheepy.knitter.pactworkaround.PactMockServerWorkaround;
+import org.sheepy.knitter.pactworkaround.PactMockServer;
+import org.sheepy.knitter.wiremock.WireMockQuarkusTestResource;
 
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -24,9 +30,13 @@ import au.com.dius.pact.core.model.annotations.Pact;
 import io.restassured.http.ContentType;
 
 @ExtendWith(PactConsumerTestExt.class)
-@PactTestFor(providerName = "farmer", port = "8096")
+@PactTestFor(providerName = "farmer", pactVersion = PactSpecVersion.V4)
+@MockServerConfig(port = "0")
+@QuarkusTestResource(WireMockQuarkusTestResource.class)
 @QuarkusTest
-public class SweaterResourceContractTest {
+// I could not use the extension in the test base because of order.
+@ExtendWith(PactMockServerWorkaround.class)
+public class SweaterResourceContractTest extends PactConsumerTestBase {
 
 	@Pact(consumer = "knitter")
 	public V4Pact buyingASweater(PactDslWithProvider builder) {
@@ -58,7 +68,9 @@ public class SweaterResourceContractTest {
 
 	@Test
 	@PactTestFor(pactMethod = "buyingASweater")
-	public void testSweaterEndpointForWhiteSweater() {
+	public void testSweaterEndpointForWhiteSweater(/*final MockServer mockServer*/final PactMockServer wrapper) {
+        forwardToPactServer(wrapper);
+
 		SweaterOrder order = new SweaterOrder("white", 12);
 		Sweater sweater = given().contentType(ContentType.JSON).body(order).when().post("/sweater/order").then().statusCode(200).extract().as(Sweater.class);
 
@@ -67,7 +79,9 @@ public class SweaterResourceContractTest {
 
 	@Test
 	@PactTestFor(pactMethod = "buyingAPinkSweater")
-	public void testSweaterEndpointForPinkSweater() {
+	public void testSweaterEndpointForPinkSweater(/*final MockServer mockServer*/final PactMockServer wrapper) {
+        forwardToPactServer(wrapper);
+
 		SweaterOrder order = new SweaterOrder("pink", 16);
 		Sweater sweater = given().contentType(ContentType.JSON).body(order).when().post("/sweater/order").then().statusCode(200).extract().as(Sweater.class);
 

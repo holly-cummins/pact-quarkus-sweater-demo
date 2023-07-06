@@ -72,6 +72,15 @@
       <version>${pact.version}</version>
       <scope>provided</scope> <!-- This should be test scope, but see https://github.com/quarkiverse/quarkus-pact/issues/28 -->
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock-jre8 -->
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-jre8</artifactId>
+      <version>2.35.0</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
