@@ -19,10 +19,12 @@
 
 - Sort out web conference green screen if necessary
 - Get an iPad with a timer running
+- Use ctrl↑ to open mission control and inspect the desktops; make one desktop for slides, one for the demo, and one for the stream (if remote). To swipe between desktops, use ctrl→ and ctrl←
 
 ### IDE setup 
 
-Open three IDEs, one for cold-person, knitter, and farmer. 
+Open two IDEs, one knitter, and farmer (cold person also has code, but we don't want the clutter). 
+Make each window big, but not full-screen, by clicking Option-GreenButton.
 
 Open a terminal within each IDE (or two OS terminals). 
 
@@ -38,7 +40,12 @@ Open a terminal within each IDE (or two OS terminals).
     cd architecture-recorder
     quarkus dev
     ```
-
+2. Start the [cold person](cold-person):
+    ```shell
+    cd cold-person
+    quarkus dev
+    ```
+   
 It may be useful to clear all architecture information, or just the historical interactions. 
 
 ```shell
@@ -62,8 +69,9 @@ It may be useful to clear all architecture information, or just the historical i
 9. Refactor the `Skein` in the farmer app. Colour is a British spelling. To refactor, `shift-f6` on `colour` variable, change it to ‘color’. Getters and setters will update too.  . 
 10. Sense check. Run the Java tests (all working), all working in all services. 
 11. Visit the web page again. It's all going to work, right, because the tests all worked?
-12. Shouldn't the unit tests have caught this? Look at `WoolResourceTest`. Because we're using the object model, our IDE automatically refactored `getColour` to `getColor`. We could have done more hard-coding in the tests, but that's kind of icky, and the IDE might have refactored the hard-coded strings, too. If we were to lock the hard-coded strings and say they can't be changed ... well, that's basically a contract. But it's only on one side, with no linkage to the other side, so it's pretty manual and error prone. 
-13. 
+12. Shouldn't the unit tests have caught this? Look at `WoolResourceTest`. Because we're using the object model, our IDE automatically refactored `getColour` to `getColor`. We could have done more hard-coding in the tests, but that's kind of icky, and the IDE might have refactored the hard-coded strings, too. If we were to lock the hard-coded strings and say they can't be changed ... well, that's basically a contract. But it's only on one side, with no linkage to the other side, so it's pretty manual and error prone. Look how much of this is duplicated; the interface FarmerService/Farmer, the WoolOrder domain object …
+    Not really any clear indication which of this should be ‘locked’ and which can change.
+
 
 ## The first contract test 
 ### Consumer
@@ -114,7 +122,7 @@ It may be useful to clear all architecture information, or just the historical i
 6. Show the `SweaterResourceTest` and then compare the two tests. Explain the differences are because Pact acts both as a mock and a validator of all possible values.
 7. Restart the tests. A json contract has appeared in `knitter/target/pacts`
 8. The test should pass, we're the consumer, we made assumptions about how the provider should behave. But are those assumptions correct? Now is when we find out! 
-9. Copy the pact from the knitter to share it to the farmer: `publish-contracts.shb`. Normally this would be done by automatically checking it into source control or by using a pact broker.
+9. Copy the pact from the knitter to share it to the farmer: `publish-contracts.sh`. Normally this would be done by automatically checking it into source control or by using a pact broker.
 
 ### Provider (farmer)
 
@@ -163,7 +171,8 @@ onto the test method. (By default, Pact will only stand up the first `@Pact` for
         //  assertEquals("pink", sweater.getColour());
     }
 ```
-5. Update the implementation in `SweaterResource` to wrap the invocation in a `try` and 
+5. Update the implementation in `SweaterResource` to wrap the invocation in a `try` and catch. 
+Shortcut is cmd-opt-T-6. 
 ```java
      } catch (Exception e) {
             throw new NotFoundException(order.getColour());
@@ -172,7 +181,7 @@ onto the test method. (By default, Pact will only stand up the first `@Pact` for
 5. The tests should pass. All good, except ... 
 6. ... publish the tests, and they fail on the other side. 
 7. Update the code to return null instead of white as the fallback, and ... they should still fail.
-8. In this case the right thing to do is to update the contract to return `204`, and update implementation to instead to a null check. The implementation would be to add a 
+8. In this case the right thing to do is to update the contract to return `204`, and update the `SweaterResource` implementation to instead to a null check. The implementation would be to add a 
 ```java
             if (skein == null) {
 ```
