@@ -1,5 +1,15 @@
 # Sweater Shop Demo notes 
 
+## Shortcuts and live templates 
+
+- `pact-enter` to create the pact mock
+- `extend-enter` to set up the `@ExtendWith`
+- `template-enter` for the JUnit template tests
+
+- shift-cmd-T to open or create tests
+- cmd-opt-T-6 to wrap a block in try-catch
+- fn-cmd-F1 to switch screen mirroring on and off
+
 ## Pre-demo prep
 
 - Print these instructions!
@@ -129,7 +139,7 @@ It may be useful to clear all architecture information, or just the historical i
 3. Add the pact provider dependency by running `quarkus extension add pact-provider` (or by restoring `farmer/pom.xml` from history).
 4. Open `WoolResource`
 5. Type shift-cmd-T and create a new test. Name it `WoolResourceContractTest`.
-6. Type template-enter to insert the live template.
+6. Type template-enter to insert the JUnit template test.
 7. Run the Java tests, show the failure, explain how it could be fixed by negotiating a contract change or changing the source code. 
 
 ## Sweater colour 
@@ -149,11 +159,12 @@ The provider contract tests in `farmer` should still pass, but now the consumer 
 ```
 onto the test method. (By default, Pact will only stand up the first `@Pact` for the right provider.)
 
-## Fallback and error handling
+## Fallback and error handling (the flow here still needs refinement)
 
 1. So we have a failing test, but what's the right fix? Fallback to white isn't right, there should be some kind of error. 
+2. Update the Pact mock/contract in the tests to return a 404 (and not return any headers). At this point tests may start failing.
 2. We think we should have a `418`, not a white sweater. `418` is `I'm a teapot`, maybe not the right code, but it's my code so I can return what I want. Also, it keeps behaviour of the different services distinct. 
-3. Show at the exception mapper to turn `NotFoundException`s into 418s. 
+3. Show the exception mapper to turn `NotFoundException`s into 418s. It's in the `NotFoundExceptionHandler`.
 4. Update the tests to expect a `418`. 
 ```java
     @Test
@@ -171,7 +182,7 @@ onto the test method. (By default, Pact will only stand up the first `@Pact` for
         //  assertEquals("pink", sweater.getColour());
     }
 ```
-5. Update the implementation in `SweaterResource` to wrap the invocation in a `try` and catch. 
+6. Update the implementation in `SweaterResource` to wrap the invocation in a `try` and catch. 
 Shortcut is cmd-opt-T-6. 
 ```java
      } catch (Exception e) {
