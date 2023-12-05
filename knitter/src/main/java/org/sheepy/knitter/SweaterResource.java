@@ -4,7 +4,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Path("/sweater")
@@ -16,13 +15,15 @@ public class SweaterResource {
     @Path("/order")
     @POST
     public Sweater knitSweater(SweaterOrder order) {
-        WoolOrder woolOrder = new WoolOrder(order.colour(), order.orderNumber());
+        WoolOrder woolOrder = new WoolOrder(order.colour(),
+                order.orderNumber());
         try {
             Skein skein = farmer.getWool(woolOrder);
-            Sweater sweater = new Sweater(skein, order.orderNumber());
+            Sweater sweater = new Sweater(skein,
+                    order.orderNumber());
             return sweater;
         } catch (Exception e) {
-            throw new NotFoundException(order.colour());
+            throw new NotFoundException("Failed for " + order.colour());
         }
     }
 }
