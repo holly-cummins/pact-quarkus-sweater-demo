@@ -145,14 +145,15 @@ It may be useful to clear all architecture information, or just the historical i
 ## Sweater colour 
 
 1. What happens if we order other sweater colours? In the UI, order a white sweater, a grey sweater, a brown sweater, a black sweater ... all should work fine. Then try a pink sweater - it will come back as white! This is a business process flaw we've identified. We don't have any dyer in the flow, so the farmer is restricted to colours of sheep.
-2. We were too vague in our contract. We actually said in the contract any colour would give a white sweater. 
-Change `stringType` to 
+2. We were too vague in our contract. We actually said in the contract any colour would give a white sweater. Update the knitter tests so that the test requests a grey sweater, and gets back a grey sweater. The test will fail, because we need to update the mock. 
+3. Update the mock to pass in grey, and change `stringType` to 
 ```java
                 .stringValue("colour", "pink")
 ```
-The provider contract tests in `farmer` should still pass, but now the consumer tests in `knitter` are failing.
+The knitter tests should be passing.
 (Normally we would build up the tests, but to keep it simple, we will just change the test.)
 2. Now publish the tests, and we have the failure. 
+3. Now repeat, but for pink. The tests will fail for the provider.
 3. If you do want to add both tests, you can copy the existing pact and test methods, and change the colours in the copy. You will also need to add
 ```java
     @PactTestFor(pactMethod = "buyingAPinkSweater")
