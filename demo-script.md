@@ -164,6 +164,13 @@ onto the test method. (By default, Pact will only stand up the first `@Pact` for
 
 1. So we have a failing test, but what's the right fix? Fallback to white isn't right, there should be some kind of error. 
 2. Update the Pact mock/contract in the tests to return a 404 (and not return any headers). At this point tests may start failing.
+```java
+                      .willRespondWith()
+                      .status(404)
+                    //  .headers(headers)
+                   //   .body(woolBody)
+                      .toPact(V4Pact.class);
+```
 2. We think we should have a `418`, not a white sweater. `418` is `I'm a teapot`, maybe not the right code, but it's my code so I can return what I want. Also, it keeps behaviour of the different services distinct. 
 3. Show the exception mapper to turn `NotFoundException`s into 418s. It's in the `NotFoundExceptionHandler`.
 4. Update the tests to expect a `418`. 
