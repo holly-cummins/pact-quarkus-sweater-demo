@@ -23,7 +23,7 @@ public class SweaterResource {
                     order.orderNumber());
             return sweater;
         } catch (Exception e) {
-            throw new NotFoundException("Failed for " + order.colour());
+            throw new NotFoundException("Order failed for sweater colour" + order.colour());
         }
     }
 }
