@@ -1,27 +1,32 @@
 package org.sheepy.observer.runtime;
 
-import java.lang.reflect.Method;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @ObserverLog
 @Interceptor
 public class InteractionInterceptor {
-    private static final Pattern pattern = Pattern.compile(".*\"orderNumber\":([0-9]*).*");
+
+    @ConfigProperty(name = "demo.interaction-latency", defaultValue = "336")
+    int latency;
+    private static final Pattern orderNumberPattern = Pattern.compile(".*\"orderNumber\":([0-9]*)" +
+            ".*");
 
     private final RecorderService recorder;
     private final ObjectMapper mapper;
     private final QuarkusConfig appConfig;
     private final CorrelationId correlationId;
 
-    public InteractionInterceptor(RecorderService recorder, QuarkusConfig appConfig, ObjectMapper mapper, CorrelationId correlationId) {
+    public InteractionInterceptor(RecorderService recorder, QuarkusConfig appConfig,
+                                  ObjectMapper mapper, CorrelationId correlationId) {
         this.recorder = recorder;
         this.appConfig = appConfig;
         this.mapper = mapper;
@@ -33,7 +38,8 @@ public class InteractionInterceptor {
 
         Method method = context.getMethod();
 
-        // Be a bit sloppy about methods which take multiple arguments, since we think they are unlikely
+        // Be a bit sloppy about methods which take multiple arguments, since we think they are
+        // unlikely
         String payload = "";
         for (Object o : context.getParameters()) {
             payload += mapper.writeValueAsString(o);
@@ -47,12 +53,15 @@ public class InteractionInterceptor {
 
         // Quick and dirty hack
         // Ideally we should read this from a header, not the payload, and it should be generic
-        Matcher matcher = pattern.matcher(payload);
-        if (matcher.find()) {
-            String match = matcher.group(1);
+        Matcher orderNumberMatcher = orderNumberPattern.matcher(payload);
+        if (orderNumberMatcher.find()) {
+            String match = orderNumberMatcher.group(1);
             interaction.setCorrelationId(match);
             correlationId.setCorrelationId(Integer.parseInt(match));
         }
+
+        // Add a delay so things animate more nicely on the screen
+        Thread.sleep(latency);
 
         recorder.recordInteraction(interaction);
 
