@@ -1,8 +1,9 @@
 import styled from "styled-components"
-import {useEffect, useState} from "react";
-import rough from "roughjs/bundled/rough.cjs.js";
+import {useEffect, useState} from "react"
+import rough from "roughjs/bundled/rough.cjs.js"
+import InteractionIcon from "../InteractionIcon"
 
-const arrowWidth = 180;
+const arrowWidth = 180
 
 const InteractionDisplay = styled.div`
   display: flex;
@@ -88,34 +89,35 @@ const Payload = styled.pre`
 
 
 const MethodName = styled.div`
-  height: 20px
+  height: 20px;
+  padding: 5px;
 `
 
 const eventLine = (id, isException) => {
-    const svg = document.getElementById(id);
-    const rc = rough.svg(svg);
-    const node = rc.line(10, 0, 90, 0, {stroke: isException ? "crimson" : "black"});
-    svg.appendChild(node);
+    const svg = document.getElementById(id)
+    const rc = rough.svg(svg)
+    const node = rc.line(10, 0, 90, 0, {stroke: isException ? "crimson" : "black"})
+    svg.appendChild(node)
     const arrowHead = rc.path("M85,-5l5,5l-5,5", {stroke: isException ? "crimson" : "black"})
     svg.appendChild(arrowHead)
 
 }
 
 const componentBox = (id) => {
-    const svg = document.getElementById(id);
-    const rc = rough.svg(svg);
-    const node = rc.rectangle(10, 10, 180, 60);
-    svg.appendChild(node);
+    const svg = document.getElementById(id)
+    const rc = rough.svg(svg)
+    const node = rc.rectangle(10, 10, 180, 60)
+    svg.appendChild(node)
 }
 
 const stringify = (payload) => JSON.stringify(payload, null, 2)
 
 
 const Interaction = ({request, response}) => {
-    const requestSvg = "request-svg" + request?.id;
-    const responseSvg = "response-svg" + response?.id;
+    const requestSvg = "request-svg" + request?.id
+    const responseSvg = "response-svg" + response?.id
     const componentSvg = "component-svg" + request?.id
-    const isException = response?.payload?.exception != null;
+    const isException = response?.payload?.exception != null
 
     useEffect(() => {
         // Only indicate exceptions on responses
@@ -149,6 +151,7 @@ const Interaction = ({request, response}) => {
 
         <InteractionDisplay>
             <Event isException={isException}>
+                <InteractionIcon message={request}/>
                 <MethodName> {request?.methodName}</MethodName>
                 <Anchor>
                     <Rough shadow={true} onMouseOver={handleRequestOpen}
@@ -163,6 +166,7 @@ const Interaction = ({request, response}) => {
                            viewBox="0 -15 100 30">
                     </Rough>
                 </Anchor>
+                <InteractionIcon message={response}/>
                 <MethodName/> {/*Cheat and add centring padding with a div*/}
             </Event>
 
@@ -184,7 +188,7 @@ const Interaction = ({request, response}) => {
                 {stringify(response?.payload)}
             </Payload>)}
         </InteractionDisplay>
-    );
-};
+    )
+}
 
-export default Interaction;
+export default Interaction

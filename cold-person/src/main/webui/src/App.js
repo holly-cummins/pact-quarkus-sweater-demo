@@ -1,6 +1,6 @@
-import "./App.css";
-import Button from "./Button";
-import Architecture from "./architecture/Architecture";
+import "./App.css"
+import Button from "./Button"
+import Architecture from "./architecture/Architecture"
 import styled from "styled-components"
 
 const Layout = styled.div`
@@ -32,7 +32,7 @@ function App() {
     return (
         <Layout>
             <Shop>
-                <Icon src="sweater-white.png" alt="a stick figure in a jumper"/>
+                <Icon src="person-in-sweater-white.png" alt="a stick figure in a jumper"/>
                 <Title>
                     Welcome to the sweater shop.
                 </Title>
@@ -40,7 +40,7 @@ function App() {
             </Shop>
             <Architecture/>
         </Layout>
-    );
+    )
 }
 
-export default App;
+export default App
