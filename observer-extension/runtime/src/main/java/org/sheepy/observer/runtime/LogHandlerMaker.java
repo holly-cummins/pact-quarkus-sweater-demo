@@ -11,7 +11,7 @@ import java.util.logging.Handler;
 public class LogHandlerMaker {
 
     public RuntimeValue<Optional<Handler>> create(BeanContainer beanContainer) {
-        RecorderService recorder = beanContainer.instance(RecorderService.class);
+        RecorderService recorder = beanContainer.beanInstance(RecorderService.class);
         Handler handler = new LogHandler(recorder);
         return new RuntimeValue<>(Optional.of(handler));
 
