@@ -13,7 +13,7 @@
     "react-scripts": "5.0.1",
     "roughjs": "^4.5.2",
     "styled-components": "^5.3.6",
-    "universal-cookie": "^4.0.4",
+    "universal-cookie": "^7.2.1",
     "web-vitals": "^3.1.1"
   },
   "scripts": {
