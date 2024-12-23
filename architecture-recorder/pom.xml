@@ -6,7 +6,7 @@
   <artifactId>architecture-recorder</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
-		<assertj.version>3.26.0</assertj.version>
+		<assertj.version>3.27.0</assertj.version>
     <compiler-plugin.version>3.13.0</compiler-plugin.version>
     <failsafe.useModulePath>false</failsafe.useModulePath>
     <maven.compiler.release>17</maven.compiler.release>
