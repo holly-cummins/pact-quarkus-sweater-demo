@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^1.6.0",
+    "axios": "^1.8.2",
     "eventsourcemock": "^2.0.0",
     "fontsource-open-sans": "^4.0.0",
     "jest-canvas-mock": "^2.4.0",
